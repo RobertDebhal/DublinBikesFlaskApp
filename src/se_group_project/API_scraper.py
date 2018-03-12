@@ -1,21 +1,19 @@
-'''
-Created on 12 Mar 2018
-
-@author: robbie
-'''
 # source https://www.digitalocean.com/community/tutorials/how-to-use-web-apis-in-python-3
 import json
 import requests
 import datetime
+import pandas as pd
+import pymysql
+import sqlalchemy
 
 api_token = '7e813fe2e25367cd1aa3c4403c764332448fce48' 
 api_url_base = 'https://api.jcdecaux.com/vls/v1/'
 
-headers = {'Content-Type': 'application/json',
-           'Authorization': 'apiKey {0}'.format(api_token)}
-
 def get_contracts_info():
-
+    """
+    Function to retrieve static and dynamic (real time) data 
+    for DublinBikes in JSON format.
+    """
     api_url = '{0}contracts'.format(api_url_base)
 
     #response = requests.get(api_url, headers=headers)
@@ -28,10 +26,16 @@ def get_contracts_info():
     
 dublin_stations_test = get_contracts_info()
 
-if dublin_stations_test is not None:
-    print("Here are the stations: ")
-    for i in dublin_stations_test:
-        #https://stackoverflow.com/questions/3682748/converting-unix-timestamp-string-to-readable-date-in-python
-        print(i['name']+":",datetime.datetime.fromtimestamp(int(i['last_update'])/1000).strftime('%Y-%m-%d %H:%M:%S'),'available bikes:',i['available_bike_stands'])
-else:
-    print('[!] Request Failed')
+engine = sqlalchemy.create_engine('mysql+pymysql://teamforsoft:whocares1@teamforsoft.ci76dskzcb0m.us-west-2.rds.amazonaws.com:3306/SE_group_project')
+conn = engine.connect()
+
+#converting json to data frame
+df = pd.read_json(json.dumps(dublin_stations_test))
+df.drop('position',1,inplace=True)
+
+#appending data frame to SQL table in RDS
+df.to_sql(name='stations',con=conn,if_exists='append')
+
+df1 = pd.read_sql_query('SELECT name, available_bikes FROM stations', engine)
+print(df1)
+
