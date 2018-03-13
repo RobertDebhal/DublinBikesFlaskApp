@@ -1,11 +1,9 @@
-# source https://www.digitalocean.com/community/tutorials/how-to-use-web-apis-in-python-3
 import json
 import requests
-import datetime
 import pandas as pd
-import pymysql
 import sqlalchemy
 
+# source https://www.digitalocean.com/community/tutorials/how-to-use-web-apis-in-python-3
 api_token = '7e813fe2e25367cd1aa3c4403c764332448fce48' 
 api_url_base = 'https://api.jcdecaux.com/vls/v1/'
 
@@ -14,8 +12,6 @@ def get_contracts_info():
     Function to retrieve static and dynamic (real time) data 
     for DublinBikes in JSON format.
     """
-    api_url = '{0}contracts'.format(api_url_base)
-
     #response = requests.get(api_url, headers=headers)
     response = requests.get('https://api.jcdecaux.com/vls/v1/stations?contract=Dublin&apiKey={0}'.format(api_token))
 
