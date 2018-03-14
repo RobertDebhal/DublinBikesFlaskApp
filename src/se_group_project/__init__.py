@@ -11,4 +11,4 @@ except DistributionNotFound:
 from flask import Flask
 from flask import render_template
 app = Flask(__name__)
-from flask_platoform import views
+from se_group_project import views

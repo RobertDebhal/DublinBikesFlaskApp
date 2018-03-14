@@ -1,5 +1,5 @@
 from flask import render_template
-from SE_group_project import app
+from se_group_project import app
 
 @app.route('/')
 def weather():

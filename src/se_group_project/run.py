@@ -1,5 +1,5 @@
 def run():
-    from SE_group_project import app
+    from se_group_project import app
     app.run(host='0.0.0.0',port=5000)
 
 
