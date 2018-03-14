@@ -39,8 +39,7 @@ def get_weather_info():
         return None
     
 def main():
-    
-    a = 1/0
+
     engine = sqlalchemy.create_engine('mysql+pymysql://teamforsoft:whocares1@teamforsoft.ci76dskzcb0m.us-west-2.rds.amazonaws.com:3306/SE_group_project')
     conn = engine.connect()
     while True:
