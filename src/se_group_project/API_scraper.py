@@ -41,6 +41,7 @@ def main():
     engine = sqlalchemy.create_engine('mysql+pymysql://teamforsoft:whocares1@teamforsoft.ci76dskzcb0m.us-west-2.rds.amazonaws.com:3306/SE_group_project')
     conn = engine.connect()
     while True:
+        count=0
         check=get_weather_info()
         dublin_stations_test = get_contracts_info()
         for i in range(len(dublin_stations_test)):
@@ -65,14 +66,14 @@ def main():
             df.to_sql(name='dynamic',con=conn,if_exists='append',index=False)
         except sqlalchemy.exc.IntegrityError:
             pass
-         
-        try:
-            df_weather.to_sql(name='weather',con=conn,if_exists='append',index=False)
-        except sqlalchemy.exc.IntegrityError:
-            pass 
+        if count%3==0: 
+            try:
+                df_weather.to_sql(name='weather',con=conn,if_exists='append',index=False)
+            except sqlalchemy.exc.IntegrityError:
+                pass 
 # #         df1 = pd.read_sql_query('SELECT number, available_bikes FROM stations', engine)
 # #         print(df1)
-        print('One loop done')
+        count+=1
         sleep(300)
 
 if __name__=='__main__':
