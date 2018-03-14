@@ -4,6 +4,9 @@ import pandas as pd
 import sqlalchemy
 from time import sleep
 import datetime
+import traceback
+import logging
+import smtplib
 
 # source https://www.digitalocean.com/community/tutorials/how-to-use-web-apis-in-python-3
 api_token = '7e813fe2e25367cd1aa3c4403c764332448fce48' 
@@ -37,7 +40,7 @@ def get_weather_info():
     
 def main():
     
-    
+    a = 1/0
     engine = sqlalchemy.create_engine('mysql+pymysql://teamforsoft:whocares1@teamforsoft.ci76dskzcb0m.us-west-2.rds.amazonaws.com:3306/SE_group_project')
     conn = engine.connect()
     while True:
@@ -66,16 +69,28 @@ def main():
             df.to_sql(name='dynamic',con=conn,if_exists='append',index=False)
         except sqlalchemy.exc.IntegrityError:
             pass
+        except requests.exception.ConnectionError:
+            sleep(600)
         if count%3==0: 
             try:
                 df_weather.to_sql(name='weather',con=conn,if_exists='append',index=False)
             except sqlalchemy.exc.IntegrityError:
-                pass 
+                pass
+            except requests.exception.ConnectionError:
+                sleep(600) 
 # #         df1 = pd.read_sql_query('SELECT number, available_bikes FROM stations', engine)
 # #         print(df1)
         count+=1
         sleep(300)
 
 if __name__=='__main__':
-    main()
-
+    try:
+        main()
+    except Exception as e:
+        #source http://naelshiab.com/tutorial-send-email-python/
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login("teamforsoft@gmail.com", "whocares1")
+        msg = str(e)
+        server.sendmail("teamforsoft@gmail.com", ["robert.de-bhal@ucdconnect.ie","fatima.mohamed@ucdconnect.ie","gartlandorla@gmail.com"], msg)
+        server.quit()
