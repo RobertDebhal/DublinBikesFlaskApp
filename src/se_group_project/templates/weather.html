@@ -1,1 +1,79 @@
-<p>"Hello"</p>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>
+		TeamForSoft
+	</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+ 
+</head>
+<body id="body">
+    	 
+    
+     
+	
+
+    
+
+    <br>
+    <br>
+    <br>
+
+	<div id="map" style="width:100%;height:400px"></div>
+	<script>
+		function myMap() {
+            var bikeMap = {
+            connollyStation : {
+                center: {lat: 53.3509, lng: 6.2500 }
+            }
+        };
+			var mapOptions = {
+				center: new google.maps.LatLng(53.350140, -6.266155),
+				zoom: 10,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			}
+		var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+        
+        var cityCircle = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: map,
+            center: {lat: 53.3509, lng: -6.25},
+            radius: 1000
+            
+            /*if (cityCircle.radius > 20) {
+                fillColor: '#f4c842';
+        }
+            else if (var radius in cityCie > 60) {
+                fillColor: '#f441e2';
+        }
+            else {
+                fillColor: '#42f4d7';
+            }*/
+                
+          });
+        }
+	</script>
+	<script src="https://maps.googleapis.com/maps/api/js?callback=myMap&key=AIzaSyDnhjzNlsrZqK3A_HtAfH0ya2hmN0qQAzs"></script>
+    <br>
+    <br>
+    <br>
+
+    
+    <br>
+    <br>
+    <br>
+
+    <div>
+        <div class="footer">
+			
+            <footer class="copyright">Copyright © 2017 Forecast Dublin Inc </footer>
+        </div>
+     </div>
+    </body>
+</html>
