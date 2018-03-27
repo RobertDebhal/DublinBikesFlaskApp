@@ -49,7 +49,10 @@ def main():
         check=get_weather_info()
         dublin_stations_test = get_contracts_info()
         for i in range(len(dublin_stations_test)):
-            dublin_stations_test[i]['last_update_dt']=datetime.datetime.fromtimestamp((int(dublin_stations_test[i]['last_update'])/1000)).strftime('%Y-%m-%d %H:%M:%S')
+            try:
+                dublin_stations_test[i]['last_update_dt']=datetime.datetime.fromtimestamp((int(dublin_stations_test[i]['last_update'])/1000)).strftime('%Y-%m-%d %H:%M:%S')
+            except TypeError:
+                dublin_stations_test[i]['last_update_dt']='1970-01-01 00:00:00'
             dublin_stations_test[i]['latest_weather']=check['dt']
             
         static = ['contract_name','name','address','position','banking','bonus']
