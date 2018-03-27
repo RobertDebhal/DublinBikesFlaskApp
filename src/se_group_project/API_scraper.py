@@ -7,6 +7,7 @@ import datetime
 import traceback
 import logging
 import smtplib
+from sqlalchemy.sql.schema import Table
 
 # source https://www.digitalocean.com/community/tutorials/how-to-use-web-apis-in-python-3
 api_token = '7e813fe2e25367cd1aa3c4403c764332448fce48' 
@@ -39,7 +40,8 @@ def get_weather_info():
         return None
     
 def main():
-
+    #if doesn't exist make table
+    
     engine = sqlalchemy.create_engine('mysql+pymysql://teamforsoft:whocares1@teamforsoft.ci76dskzcb0m.us-west-2.rds.amazonaws.com:3306/SE_group_project')
     conn = engine.connect()
     while True:
