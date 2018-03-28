@@ -7,7 +7,6 @@ import sqlalchemy
 
 def update_static(dublin_stations_test, engine, conn):
     dynamic2 = ['status','bike_stands','available_bike_stands','available_bikes','last_update']
-
     #chaging positions filed to two separate lat and lng methods
     for i in range(len(dublin_stations_test)):
         dublin_stations_test[i]['lat']=dublin_stations_test[i]['position']['lat']

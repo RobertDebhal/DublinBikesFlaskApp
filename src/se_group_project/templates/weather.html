@@ -6,15 +6,11 @@
     <title>
 		TeamForSoft
 	</title>
-    <link rel="stylesheet" type="text/css" href="style.css"/>
+<!--    <link rel="stylesheet" type="text/css" href="style.css"/>-->
  
 </head>
 <body id="body">
     	 
-    
-     
-	
-
     
 
     <br>
@@ -22,6 +18,7 @@
     <br>
 
 	<div id="map" style="width:100%;height:400px"></div>
+    <div id="id01"></div>
 	<script>
 		function myMap() {
             var bikeMap = {
@@ -167,6 +164,31 @@ KingStreetNorth:{lat:53.350291000000006,
 lng:-6.273507},
 WesternWay:{lat:53.354929000000006,lng:-6.269425}
 };
+ 
+            // https://www.w3schools.com/js/js_json_http.asp
+             function checkNumbers() {
+	var xmlhttp = new XMLHttpRequest();
+	var url = "static_data.json";
+	xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			var parsedObj = JSON.parse(this.responseText);
+             myFunction(parsedObj);
+		}
+	};
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
+             }
+            
+    function myFunction(arr) {
+    var out = "";
+    var i;
+    for(i = 0; i < arr.length; i++) {
+        out += ''+ arr[i].address+ '<br>';
+    }
+    document.getElementById("id01").innerHTML = out;
+}      
+            checkNumbers()
+            
 			var mapOptions = {
 				center: new google.maps.LatLng(53.350140, -6.266155),
 				zoom: 15,
@@ -183,9 +205,21 @@ WesternWay:{lat:53.354929000000006,lng:-6.269425}
                 fillOpacity: 0.35,
                 map: map,
                 center: bikeMap[station],
+                position: bikeMap[station],
                 radius: 50
             });
-            var contentString = '<div>'+ '<p> hello </p>'+ '</div>';
+            var contentString = '<div>'+ '<div> '+ station +' </div>'+ '<div>'+ '</div>' +'</div>';
+            
+            var infowindow = new google.maps.InfoWindow();
+            
+            
+
+           google.maps.event.addListener(cityCircle,'click',(function( cityCircle,contentString,infowindow ) {
+               return function(){
+          infowindow.setContent(contentString);
+          infowindow.open(map,cityCircle);
+               };
+        })(cityCircle,contentString,infowindow)); 
         }
         }
 	</script>
