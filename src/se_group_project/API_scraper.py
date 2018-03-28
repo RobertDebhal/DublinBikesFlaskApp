@@ -3,11 +3,11 @@ import requests
 import pandas as pd
 import sqlalchemy
 from time import sleep
-import datetime
-import traceback
-import logging
+# import traceback
+# import logging
 import smtplib
-from sqlalchemy.sql.schema import Table
+# from sqlalchemy.sql.schema import Table
+import updateStaticData
 
 # source https://www.digitalocean.com/community/tutorials/how-to-use-web-apis-in-python-3
 api_token = '7e813fe2e25367cd1aa3c4403c764332448fce48' 
@@ -48,6 +48,8 @@ def main():
         count=0
         check=get_weather_info()
         dublin_stations_test = get_contracts_info()
+        #need to compare df(contains dynamic bike info to be saved) 
+        #to static station list to check for new stations 
         for i in range(len(dublin_stations_test)):
             dublin_stations_test[i]['latest_weather']=check['dt']
             
@@ -55,6 +57,11 @@ def main():
          
         #converting json to data frame
         df = pd.read_json(json.dumps(dublin_stations_test))
+        
+        df_query_static_numbers=pd.read_sql_query('SELECT number from static', engine)
+        if df.shape[0]>df_query_static_numbers.shape[0]:
+            updateStaticData.update_static(dublin_stations_test, engine, conn)
+            
         for i in static:
             df.drop(i,1, inplace = True)
         
