@@ -4,7 +4,7 @@ from flask import jsonify
 from flask import json
 import QueryDatabase
 import sqlalchemy
-import f
+import f, o, r
 
 from API_scraper import api_token, api_url_base
 engine = sqlalchemy.create_engine('mysql+pymysql://teamforsoft:whocares1@teamforsoft.ci76dskzcb0m.us-west-2.rds.amazonaws.com:3306/SE_group_project')
@@ -17,13 +17,26 @@ def weather(name=name):
     return render_template("weather.html",name=name)
 
 @app.route('/fatima')
-def weather(name=f.name):
+def weatherf(name=f.name):
     return render_template("weatherf.html",name=name)
 
-@app.route('/')
-def weather(name=name):
-    return render_template("weather.html",name=name)
+@app.route('/orla')
+def weathero(name=f.name):
+    return render_template("weathero.html",name=name)
 
-@app.route('/')
-def weather(name=name):
-    return render_template("weather.html",name=name)
+@app.route('/robbie')
+def weatherr(name=f.name):
+    return render_template("weatherr.html",name=name)
+
+@app.route('/robbieJSON')
+def JSONr(json=f.json):
+    return jsonify(json)
+
+@app.route('/fatimaJSON')
+def JSONf(json=f.json):
+    return jsonify(json)
+
+@app.route('/orlaJSON')
+def JSONo(json=f.json):
+    return jsonify(json)
+
