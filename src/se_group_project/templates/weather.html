@@ -4,46 +4,38 @@
 <head>
     <meta charset="utf-8">
     <title>
-		TeamForSoft
+		dasfsdfsdfgsdfTeamForSoft
 	</title>
-<!--    <link rel="stylesheet" type="text/css" href="style.css"/>-->
+    <link rel="stylesheet" type="text/css" href="style.css"/>
  
 </head>
 <body id="body">
+    	 
+    
+     
+	
+
+    
+
     <br>
     <br>
     <br>
 
 	<div id="map" style="width:100%;height:400px"></div>
-    <div id="id01"></div>
 	<script>
 		function myMap() {
- 
-            // https://www.w3schools.com/js/js_json_http.asp
-             function checkNumbers() {
-	var xmlhttp = new XMLHttpRequest();
-	var url = "static_data.json";
-	xmlhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			var parsedObj = JSON.parse(this.responseText);
-             myFunction(parsedObj);
-		}
-	};
-	xmlhttp.open("GET", url, true);
-	xmlhttp.send();
-             }
-            
-
-        function myFunction(arr) {
-      
-			var mapOptions = {
+var bikeMap=JSON.parse('{{ name | tojson | safe}}');
+//var bikeMap = {
+//ClarendonRow:{lat:53.340927,lng:-6.262501},
+//};
+		var mapOptions = {
 				center: new google.maps.LatLng(53.350140, -6.266155),
 				zoom: 15,
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			}
 		var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-        var i;
-         for(i = 0; i < arr.length; i++){
+        
+        for (var station in bikeMap){
             var cityCircle = new google.maps.Circle({
                 strokeColor: '#0000FF',
                 strokeOpacity: 0.8,
@@ -51,27 +43,13 @@
                 fillColor: '#0000FF',
                 fillOpacity: 0.35,
                 map: map,
-                center:{lat:arr[i].lat,lng:arr[i].lng},
-                position: {lat:arr[i].lat,lng:arr[i].lng},
+                center: bikeMap[station],
                 radius: 50
             });
-            var contentString = '<div>'+ '<div> '+ arr[i].name +' </div>'+ '<div>'+ '</div>' +'</div>';
-            
-            var infowindow = new google.maps.InfoWindow();
-            
-            
-
-           google.maps.event.addListener(cityCircle,'click',(function( cityCircle,contentString,infowindow ) {
-               return function(){
-          infowindow.setContent(contentString);
-          infowindow.open(map,cityCircle);
-               };
-        })(cityCircle,contentString,infowindow)); 
+            alert(bikeMap[station])
+            var contentString = '<div>'+ '<p> hello </p>'+ '</div>';
         }
-        }        
-                checkNumbers();
-    }           
-            
+        }
 	</script>
 	<script src="https://maps.googleapis.com/maps/api/js?callback=myMap&key=AIzaSyDnhjzNlsrZqK3A_HtAfH0ya2hmN0qQAzs"></script>
     <br>
@@ -83,10 +61,10 @@
     <br>
     <br>
 
-    <div>
+    <div id="/test">
         <div class="footer">
 			
-            <footer class="copyright">Copyright © 2017 Forecast Dublin Inc </footer>
+            <footer class="copyright"> '{{ name | tojson | safe}}'</footer>
         </div>
      </div>
     </body>
