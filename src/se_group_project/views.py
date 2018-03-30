@@ -1,15 +1,37 @@
 from flask import render_template
+from flask import jsonify, g, json
 from se_group_project import app
-from flask import jsonify
-from flask import json
+from flask import Flask
 import QueryDatabase
 import sqlalchemy
 import f, o, r
-
 from API_scraper import api_token, api_url_base
-engine = sqlalchemy.create_engine('mysql+pymysql://teamforsoft:whocares1@teamforsoft.ci76dskzcb0m.us-west-2.rds.amazonaws.com:3306/SE_group_project')
-conn = engine.connect()
-name = QueryDatabase.getStaticInfo(engine, conn)
+
+app.config.from_object('config')
+name={}
+
+#from lecture notes
+def connect_to_database():
+    engine = sqlalchemy.create_engine('mysql+pymysql://teamforsoft:whocares1@teamforsoft.ci76dskzcb0m.us-west-2.rds.amazonaws.com:3306/SE_group_project')
+    return engine
+
+
+def get_db():
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = connect_to_database()
+    return db
+
+#Need to figure out
+#@app.teardown_appcontext
+#def close_connection(exception):
+#    db = getattr(g, '_database', None)
+#    if db is not None:
+#        db.close()
+
+#with app.app_context():
+    #print(get_db())
+    #print(g.get('_database', None))
 
 @app.route('/')
 def weather(name=name):
@@ -20,8 +42,8 @@ def weatherf(name=f.name):
     return render_template("weatherf.html",name=name)
 
 @app.route('/orla')
-def weathero():
-    return render_template("weathero.html")
+def weathero(name=o.name):
+    return render_template("weathero.html",name=name)
 
 @app.route('/robbie')
 def weatherr(name=f.name):
