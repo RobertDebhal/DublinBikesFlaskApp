@@ -21,7 +21,7 @@ def weatherf(name=f.name):
     return render_template("weatherf.html",name=name)
 
 @app.route('/orla')
-def weathero(name=f.name):
+def weathero(name=o.name):
     return render_template("weathero.html",name=name)
 
 @app.route('/robbie')
@@ -29,7 +29,8 @@ def weatherr(name=f.name):
     return render_template("weatherr.html",name=name)
 
 @app.route('/robbieJSON')
-def JSONr(json=f.json):
+def JSONr(json=f.json
+):
     return jsonify(json)
 
 @app.route('/fatimaJSON')
@@ -37,6 +38,6 @@ def JSONf(json=f.json):
     return jsonify(json)
 
 @app.route('/orlaJSON')
-def JSONo(json=f.json):
+def JSONo(json=o.json):
     return jsonify(json)
 
