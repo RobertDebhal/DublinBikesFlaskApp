@@ -8,7 +8,7 @@ def getStaticInfo(engine, conn):
     df_query = pd.read_sql_query('SELECT * FROM static ORDER BY number desc', engine)
     df_dict = df_query.to_dict(orient='records')
 #     print(df_dict)
-    print((df_dict))
+#    print((df_dict))
 #     print(df_dict)
 #     with open('newinfo.text', 'w') as outfile:
 #         outfile.write(df_dict)

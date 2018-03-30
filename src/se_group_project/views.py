@@ -10,7 +10,6 @@ from API_scraper import api_token, api_url_base
 engine = sqlalchemy.create_engine('mysql+pymysql://teamforsoft:whocares1@teamforsoft.ci76dskzcb0m.us-west-2.rds.amazonaws.com:3306/SE_group_project')
 conn = engine.connect()
 name = QueryDatabase.getStaticInfo(engine, conn)
-# print (name)
 
 @app.route('/')
 def weather(name=name):
@@ -21,16 +20,15 @@ def weatherf(name=f.name):
     return render_template("weatherf.html",name=name)
 
 @app.route('/orla')
-def weathero(name=o.name):
-    return render_template("weathero.html",name=name)
+def weathero():
+    return render_template("weathero.html")
 
 @app.route('/robbie')
 def weatherr(name=f.name):
     return render_template("weatherr.html",name=name)
 
 @app.route('/robbieJSON')
-def JSONr(json=f.json
-):
+def JSONr(json=f.json):
     return jsonify(json)
 
 @app.route('/fatimaJSON')

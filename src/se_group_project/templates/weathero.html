@@ -13,7 +13,7 @@
     <br> <br><br>
 	<div id="map" style="width:100%;height:400px"></div>
 	<script>
-		
+		var lastOpenedInfoWindow;
 
 		function myMap() {
  
@@ -35,7 +35,7 @@
       
 			var mapOptions = {
 				center: new google.maps.LatLng(53.350140, -6.266155),
-				zoom: 15,
+				zoom: 14,
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			}
 		var map = new google.maps.Map(document.getElementById("map"), mapOptions);
@@ -59,11 +59,21 @@
             
            google.maps.event.addListener(cityCircle,'click',(function( cityCircle,contentString,infowindow ) {
                return function(){
+          //https://stackoverflow.com/questions/12621274/close-infowindow-when-another-marker-is-clicked
+          closeLastOpenedInfoWindow();
           infowindow.setContent(contentString);
           infowindow.open(map,cityCircle);
+          lastOpenedInfoWindow = infowindow;
                };
         })(cityCircle,contentString,infowindow)); 
         }
+        
+        function closeLastOpenedInfoWindow(){
+			if (lastOpenedInfoWindow) {
+        lastOpenedInfoWindow.close();
+    }
+}
+        
         }        
                 checkNumbers();
 		
@@ -71,114 +81,7 @@
 	}
 		
 		
-		
-	//-------------------------------------------this morning ---------	
-		
-		/*
-		
-		
-		
-		
-		
-		
-		
-		function myMap() {
-			
-		 function myFunction(arr) {	
-
-		var mapOptions = {
-				center: new google.maps.LatLng(53.350140, -6.266155),
-				zoom: 14,
-				mapTypeId: google.maps.MapTypeId.ROADMAP
-			}
-		var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-        var i;
-			for(i = 0; i < arr.length; i++){
-            var cityCircle = new google.maps.Circle({
-                strokeColor: '#0000FF',
-                strokeOpacity: 0.8,
-                strokeWeight: 0.5,
-                fillColor: '#0000FF',
-                fillOpacity: 0.35,
-                map: map,
-				center: {lat:arr[i].lat,lng:arr[i].lng},
-                radius: 50
-            });
-            var contentString = '<div>'+ '<p> '+ arr[i].name +'</p>'+ '</div>';
-			
-			var infowindow = new google.maps.InfoWindow();
-            
-           google.maps.event.addListener(cityCircle,'click',(function( cityCircle,contentString,infowindow ) {
-               return function(){
-          		infowindow.setContent(contentString);
-          		infowindow.open(map,cityCircle);
-               };
-        })(cityCircle,contentString,infowindow)); 
-			
-        }
-        }
-			var bikeMap=JSON.parse('{{ name | tojson | safe}}');
-			 myFunction(bikeMap);
-			
-			
-		//checkNumbers();	
-		}
-		/* ---------- old one --------------------
-		
-
-		function myMap() {
- 
-            // https://www.w3schools.com/js/js_json_http.asp
-             function checkNumbers() {
-	var xmlhttp = new XMLHttpRequest();
-	var url = "static_data.json";
-	xmlhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			var parsedObj = JSON.parse(this.responseText);
-             myFunction(parsedObj);
-		}
-	};
-	xmlhttp.open("GET", url, true);
-	xmlhttp.send();
-             }
-            
-        function myFunction(arr) {
-      
-			var mapOptions = {
-				center: new google.maps.LatLng(53.350140, -6.266155),
-				zoom: 15,
-				mapTypeId: google.maps.MapTypeId.ROADMAP
-			}
-		var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-        var i;
-         for(i = 0; i < arr.length; i++){
-            var cityCircle = new google.maps.Circle({
-                strokeColor: '#0000FF',
-                strokeOpacity: 0.8,
-                strokeWeight: 0.5,
-                fillColor: '#0000FF',
-                fillOpacity: 0.35,
-                map: map,
-                center:{lat:arr[i].lat,lng:arr[i].lng},
-                position: {lat:arr[i].lat,lng:arr[i].lng},
-                radius: 50
-            });
-            var contentString = '<div>'+ '<div> '+ arr[i].name +' </div>'+ '<div>'+ '</div>' +'</div>';
-            
-            var infowindow = new google.maps.InfoWindow();
-            
-            
-           google.maps.event.addListener(cityCircle,'click',(function( cityCircle,contentString,infowindow ) {
-               return function(){
-          infowindow.setContent(contentString);
-          infowindow.open(map,cityCircle);
-               };
-        })(cityCircle,contentString,infowindow)); 
-        }
-        }        
-                checkNumbers();
-		*/
-		
+	
 		
 		
 		
