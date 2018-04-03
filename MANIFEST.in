@@ -1,3 +1,3 @@
-graft se_group_project/templates
-graft se_group_project/static
+graft src/se_group_project/templates
+graft src/se_group_project/static
 
