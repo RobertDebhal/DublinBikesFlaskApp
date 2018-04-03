@@ -1,11 +1,7 @@
-from flask import render_template
-from flask import jsonify, g, json
+from flask import render_template,jsonify, g, json, Flask
 from se_group_project import app
-from flask import Flask
-import QueryDatabase
 import sqlalchemy
 import f, o, r
-from API_scraper import api_token, api_url_base
 
 app.config.from_object('config')
 name={}
@@ -61,3 +57,12 @@ def JSONf(json=f.json):
 def JSONo(json=o.json):
     return jsonify(json)
 
+#http://flask.pocoo.org/docs/0.12/patterns/errorpages/
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(500)
+def internal_error(e):
+    return render_template('500.html'), 500
