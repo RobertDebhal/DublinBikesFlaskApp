@@ -8,6 +8,7 @@ setup(name= "se_group_project",
       author_email="orla.gartland@ucdconnect.ie",
       licence="GPL3", 
       packages= ['se_group_project'],
+      include_package_data=True,
       entry_points ={
           'console_scripts':['scraper=se_group_project.API_scraper:main','host=se_group_project.run:run']
           }
