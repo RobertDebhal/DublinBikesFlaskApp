@@ -9,7 +9,20 @@ def connect_to_database():
     engine = sqlalchemy.create_engine('mysql+pymysql://teamforsoft:whocares1@teamforsoft.ci76dskzcb0m.us-west-2.rds.amazonaws.com:3306/SE_group_project')
     return engine
 
+#@app.before_request
+#def before_request():
+#    g.db = connect_to_database()
 
+#@app.teardown_request
+#def teardown_request(exception):
+#    db = getattr(g, '_database', None)
+#    if db is not None:
+#        db.close()
+		
+		
+		
+		
+		
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
@@ -35,7 +48,7 @@ def weather(name=name):
 def JSONo():
 	engine = get_db()
 	data = []
-	rows = engine.execute('SELECT * FROM static')
+	rows = engine.execute('SELECT * FROM static s, dynamic d where  s.number = d.number AND ( s.number,d.last_update) IN (SELECT dy.number, MAX(dy.last_update) FROM dynamic dy group by dy.number) ')
 	for row in rows:
 		data.append(dict(row))
 	return jsonify(data) 
