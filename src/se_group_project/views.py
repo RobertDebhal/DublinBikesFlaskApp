@@ -68,7 +68,7 @@ def JSONo():
 def get_stations(station_id):
 	engine = get_db()
 	data = []
-	rows = engine.execute('SELECT * FROM dynamic d, static s WHERE number = {} and d.last_update = (SELECT max(last_update) FROM dynamic WHERE number={} ) and w.number = s.number;'.format(station_id,station_id ))
+	rows = engine.execute('SELECT last_update,available_bikes, available_bike_stands, bike_stands, number,status,latest_weather FROM dynamic WHERE number = {} and last_update = (SELECT max(last_update) FROM dynamic WHERE number={} ) ;'.format(station_id,station_id))
 	for row in rows:
 		data.append(dict(row))
 	return jsonify(data) 
