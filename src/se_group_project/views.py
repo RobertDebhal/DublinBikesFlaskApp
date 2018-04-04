@@ -54,8 +54,26 @@ def JSONf(json=f.json):
     return jsonify(json)
 
 @app.route('/orlaJSON')
-def JSONo(json=o.json):
-    return jsonify(json)
+def JSONo():
+	engine = get_db()
+	data = []
+	rows = engine.execute('SELECT * FROM static')
+	for row in rows:
+		data.append(dict(row))
+	return jsonify(data) 
+	#return jsonify(json)
+
+
+@app.route("/available/<int:station_id>")
+def get_stations(station_id):
+	engine = get_db()
+	data = []
+	rows = engine.execute('SELECT last_update,available_bikes, available_bike_stands, bike_stands, number,status,latest_weather FROM dynamic WHERE number = {} and last_update = (SELECT max(last_update) FROM dynamic WHERE number={} ) ;'.format(station_id,station_id ))
+	for row in rows:
+		data.append(dict(row))
+	return jsonify(data) 
+
+
 
 #http://flask.pocoo.org/docs/0.12/patterns/errorpages/
 #@app.errorhandler(404)

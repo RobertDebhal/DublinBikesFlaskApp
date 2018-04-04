@@ -10,26 +10,29 @@
  
 </head>
 <body id="body">
+	
+
     <br> <br><br>
 	<div id="map" style="width:100%;height:400px"></div>
 	<script>
 		var lastOpenedInfoWindow;
-
+		var parsedObj;
+		
 		function myMap() {
- 
-            // https://www.w3schools.com/js/js_json_http.asp
-             function checkNumbers() {
+ // https://www.w3schools.com/js/js_json_http.asp
+             function checkNumbers(url) {
 	var xmlhttp = new XMLHttpRequest();
-	var url = "http://localhost:5000/orlaJSON";
 	xmlhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			var parsedObj = JSON.parse(this.responseText);
-             myFunction(parsedObj);
+			parsedObj = JSON.parse(this.responseText);
+            myFunction(parsedObj);
+			
 		}
 	};
 	xmlhttp.open("GET", url, true);
 	xmlhttp.send();
              }
+            
             
         function myFunction(arr) {
       
@@ -50,7 +53,8 @@
                 map: map,
                 center:{lat:arr[i].lat,lng:arr[i].lng},
                 position: {lat:arr[i].lat,lng:arr[i].lng},
-                radius: 50
+                radius: 50,
+				number: arr[i].number
             });
             var contentString = '<div>'+ '<div> '+ arr[i].name +' </div>'+ '<div>'+ '</div>' +'</div>';
             
@@ -60,6 +64,8 @@
            google.maps.event.addListener(cityCircle,'click',(function( cityCircle,contentString,infowindow ) {
                return function(){
           //https://stackoverflow.com/questions/12621274/close-infowindow-when-another-marker-is-clicked
+	     
+		  contentString = ""+cityCircle.number;
           closeLastOpenedInfoWindow();
           infowindow.setContent(contentString);
           infowindow.open(map,cityCircle);
@@ -67,7 +73,7 @@
                };
         })(cityCircle,contentString,infowindow)); 
         }
-        
+    
         function closeLastOpenedInfoWindow(){
 			if (lastOpenedInfoWindow) {
         lastOpenedInfoWindow.close();
@@ -75,7 +81,11 @@
 }
         
         }        
-                checkNumbers();
+			
+			
+                checkNumbers("http://localhost:5000/orlaJSON");
+				
+			//	checkNumbers("http://localhost:5000/available/"+i;);
 		
 		
 	}
@@ -90,6 +100,7 @@
 	<script src="https://maps.googleapis.com/maps/api/js?callback=myMap&key=AIzaSyDnhjzNlsrZqK3A_HtAfH0ya2hmN0qQAzs"></script>
 	
 
+	<button onclick=" myMap()">Click me</button>
 	
 	
     <br>
