@@ -2,7 +2,7 @@ import json
 import requests
 import pandas as pd
 import sqlalchemy
-from time import sleep
+from time import sleep, time
 # import traceback
 # import logging
 import smtplib
@@ -46,16 +46,15 @@ def main():
     conn = engine.connect()
     while True:
         try:
-			check=get_weather_info()
+            check=get_weather_info()
         except requests.exception.ConnectionError:
-			sleep(600) 
-			continue
+            sleep(600)
+            continue
         try:
-			dublin_stations_test = get_contracts_info()
-		except requests.exception.ConnectionError:
-			sleep(600)
-			continue
-			
+            dublin_stations_test = get_contracts_info()
+        except requests.exception.ConnectionError:
+            sleep(600)
+            continue
         #need to compare df(contains dynamic bike info to be saved) 
         #to static station list to check for new stations 
         for i in range(len(dublin_stations_test)):
@@ -83,25 +82,17 @@ def main():
         try:
             df.to_sql(name='dynamic',con=conn,if_exists='append',index=False)
         except sqlalchemy.exc.IntegrityError:
-            pass 
-		try:
-			df_weather.to_sql(name='weather',con=conn,if_exists='append',index=False)
-		except sqlalchemy.exc.IntegrityError:
-			pass
+            pass
+        try:
+            df_weather.to_sql(name='weather',con=conn,if_exists='append',index=False)
+        except sqlalchemy.exc.IntegrityError:
+            pass
 # #         df1 = pd.read_sql_query('SELECT number, available_bikes FROM stations', engine)
 # #         print(df1)
-        count+=1
         #openweather cut us off requesting every 5 minutes
+        with open('check_file','w') as file:
+            file.write(str(time()))
         sleep(600)
 
 if __name__=='__main__':
-    try:
-        main()
-    except Exception as e:
-        #source http://naelshiab.com/tutorial-send-email-python/
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login("teamforsoft@gmail.com", "whocares1")
-        msg = str(e)
-        server.sendmail("teamforsoft@gmail.com", ["robert.de-bhal@ucdconnect.ie","fatima.mohamed@ucdconnect.ie","gartlandorla@gmail.com"], msg)
-        server.quit()
+    main()
