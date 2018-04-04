@@ -4,9 +4,8 @@
 <head>
     <meta charset="utf-8">
     <title>
-		dasfsdfsdfgsdfTeamForSoft
+		Dublin Bikes
 	</title>
- <!--   <link rel="stylesheet" type="text/css" href="style.css"/> -->
  
 </head>
 <body id="body">
@@ -58,7 +57,7 @@
                 radius: 50,
 				number: arr[i].number
             });
-            var contentString = '<div>'+ '<div> '+ arr[i].name +' </div>'+ '<div>'+ '</div>' +'</div>';
+            var contentString;
             
             var infowindow = new google.maps.InfoWindow();
             var num = cityCircle.number;
@@ -67,7 +66,7 @@
 				   $.ajax({  
                 url: "http://localhost:5000/available/"+cityCircle.number,  
                 success: function(data) { 
-                        infowindow.setContent(data[0].available_bikes+"");  
+                        infowindow.setContent('<b>Station Number: '+data[0].number +'</b><br>'+ data[0].address+'<br>Available bikes: '+data[0].available_bikes+"<br>Available stands: "+data[0].available_bike_stands);  
 						infowindow.open(map, cityCircle); 
 						closeLastOpenedInfoWindow();
 						lastOpenedInfoWindow = infowindow; 
@@ -85,12 +84,9 @@
 }
         
         }        
-			
-			
-                checkNumbers("http://localhost:5000/orlaJSON");
-				
-			//	checkNumbers("http://localhost:5000/available/"+i;);
 		
+			
+                checkNumbers("http://localhost:5000/orlaJSON");		
 		
 	}	
 		
@@ -111,8 +107,6 @@
 
     <div id="/test">
         <div class="footer">
-			
-       <!--     <footer class="copyright" > '{{ name | tojson | safe}}'</footer> -->
         </div>
      </div>
     </body>

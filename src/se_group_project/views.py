@@ -1,10 +1,8 @@
 from flask import render_template,jsonify, g, json, Flask
 from se_group_project import app
 import sqlalchemy
-import f, o, r
 
-app.config.from_object('config')
-name={}
+#app.config.from_object('config')
 
 #from lecture notes
 def connect_to_database():
@@ -28,30 +26,10 @@ def get_db():
 #with app.app_context():
     #print(get_db())
     #print(g.get('_database', None))
-
+name={}
 @app.route('/')
 def weather(name=name):
-    return render_template("weather.html",name=name)
-
-@app.route('/fatima')
-def weatherf(name=f.name):
-    return render_template("weatherf.html",name=name)
-
-@app.route('/orla')
-def weathero(name=o.name):
     return render_template("weathero.html",name=name)
-
-@app.route('/robbie')
-def weatherr(name=f.name):
-    return render_template("weatherr.html",name=name)
-
-@app.route('/robbieJSON')
-def JSONr(json=f.json):
-    return jsonify(json)
-
-@app.route('/fatimaJSON')
-def JSONf(json=f.json):
-    return jsonify(json)
 
 @app.route('/orlaJSON')
 def JSONo():
@@ -61,15 +39,13 @@ def JSONo():
 	for row in rows:
 		data.append(dict(row))
 	return jsonify(data) 
-	#return jsonify(json)
-
 
 @app.route("/available/<int:station_id>")
 def get_stations(station_id):
 	engine = get_db()
 	data = []
-	rows = engine.execute('SELECT last_update,available_bikes, available_bike_stands, bike_stands, number,status,latest_weather FROM dynamic WHERE number = {} and last_update = (SELECT max(last_update) FROM dynamic WHERE number={} ) ;'.format(station_id,station_id))
-	for row in rows:
+	rows = engine.execute('SELECT * FROM dynamic d, static s WHERE d.number=s.number and d.number = {} and d.last_update = (SELECT max(last_update) FROM dynamic d WHERE d.number={} ) ;'.format(station_id,station_id))
+	for row in rows:  # last_update,available_bikes, available_bike_stands, bike_stands, number,status,latest_weather
 		data.append(dict(row))
 	return jsonify(data) 
 
