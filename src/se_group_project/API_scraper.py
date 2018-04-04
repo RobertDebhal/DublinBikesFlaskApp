@@ -88,7 +88,8 @@ def main():
 # #         df1 = pd.read_sql_query('SELECT number, available_bikes FROM stations', engine)
 # #         print(df1)
         count+=1
-        sleep(300)
+        #openweather cut us off requesting every 5 minutes
+        sleep(600)
 
 if __name__=='__main__':
     try:
