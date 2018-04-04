@@ -45,16 +45,34 @@
 		var map = new google.maps.Map(document.getElementById("map"), mapOptions);
         var i;
          for(i = 0; i < arr.length; i++){
+            var radiusOut;
+			var colorOut;
+			if (arr[i].available_bikes<5){
+			    colorOut='#B30000';
+			    radiusOut=48;
+			}
+			else if (arr[i].available_bikes>5&&arr[i].available_bikes<10){
+			    colorOut='#FF0000';
+			    radiusOut=62;	
+			}
+			else if(arr[i].available_bikes>10&&arr[i].available_bikes<18){
+			    colorOut='#0000FF';
+			    radiusOut=62;	
+			}
+			else{
+			    colorOut='#000099';
+			    radiusOut=70;
+			}
             var cityCircle = new google.maps.Circle({
-                strokeColor: '#0000FF',
+                strokeColor: colorOut,
                 strokeOpacity: 0.8,
                 strokeWeight: 0.5,
-                fillColor: '#0000FF',
+                fillColor: colorOut,
                 fillOpacity: 0.35,
                 map: map,
                 center:{lat:arr[i].lat,lng:arr[i].lng},
                 position: {lat:arr[i].lat,lng:arr[i].lng},
-                radius: 50,
+                radius: radiusOut,
 				number: arr[i].number
             });
             var contentString;
