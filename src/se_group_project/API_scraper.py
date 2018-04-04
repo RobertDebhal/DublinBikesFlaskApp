@@ -45,9 +45,17 @@ def main():
     engine = sqlalchemy.create_engine('mysql+pymysql://teamforsoft:whocares1@teamforsoft.ci76dskzcb0m.us-west-2.rds.amazonaws.com:3306/SE_group_project')
     conn = engine.connect()
     while True:
-        count=0
-        check=get_weather_info()
-        dublin_stations_test = get_contracts_info()
+        try:
+			check=get_weather_info()
+        except requests.exception.ConnectionError:
+			sleep(600) 
+			continue
+        try:
+			dublin_stations_test = get_contracts_info()
+		except requests.exception.ConnectionError:
+			sleep(600)
+			continue
+			
         #need to compare df(contains dynamic bike info to be saved) 
         #to static station list to check for new stations 
         for i in range(len(dublin_stations_test)):
@@ -75,16 +83,11 @@ def main():
         try:
             df.to_sql(name='dynamic',con=conn,if_exists='append',index=False)
         except sqlalchemy.exc.IntegrityError:
-            pass
-        except requests.exception.ConnectionError:
-            sleep(600)
-        if count%3==0: 
-            try:
-                df_weather.to_sql(name='weather',con=conn,if_exists='append',index=False)
-            except sqlalchemy.exc.IntegrityError:
-                pass
-            except requests.exception.ConnectionError:
-                sleep(600) 
+            pass 
+		try:
+			df_weather.to_sql(name='weather',con=conn,if_exists='append',index=False)
+		except sqlalchemy.exc.IntegrityError:
+			pass
 # #         df1 = pd.read_sql_query('SELECT number, available_bikes FROM stations', engine)
 # #         print(df1)
         count+=1
