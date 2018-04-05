@@ -9,6 +9,10 @@ def connect_to_database():
     engine = sqlalchemy.create_engine('mysql+pymysql://teamforsoft:whocares1@teamforsoft.ci76dskzcb0m.us-west-2.rds.amazonaws.com:3306/SE_group_project')
     return engine
 
+def connect_to_local_db():
+    engine = sqlite3.connect('most_recent_station_data.db')
+	return engine
+
 #@app.before_request
 #def before_request():
 #    g.db = connect_to_database()
@@ -18,9 +22,6 @@ def connect_to_database():
 #    db = getattr(g, '_database', None)
 #    if db is not None:
 #        db.close()
-		
-		
-		
 		
 		
 def get_db():
@@ -55,12 +56,25 @@ def JSONo():
 
 @app.route("/available/<int:station_id>")
 def get_stations(station_id):
-	engine = get_db()
+	engine = connect_to_local_db()
+	engine.row_factory=sqlite3.Row
+	cur = engine.cursor()
+	rows=cur.execute('SELECT * FROM occupancy WHERE number ={} ) ;'.format(station_id))
 	data = []
-	rows = engine.execute('SELECT * FROM dynamic d, static s WHERE d.number=s.number and d.number = {} and d.last_update = (SELECT max(last_update) FROM dynamic d WHERE d.number={} ) ;'.format(station_id,station_id))
-	for row in rows:  # last_update,available_bikes, available_bike_stands, bike_stands, number,status,latest_weather
+	for row in rows: 
 		data.append(dict(row))
 	return jsonify(data) 
+
+
+
+
+
+
+
+
+
+
+
 
 
 

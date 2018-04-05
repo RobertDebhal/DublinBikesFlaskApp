@@ -19,6 +19,25 @@
 		var lastOpenedInfoWindow;
 		var parsedObj;
 		
+		var stationsLatestData;
+		
+	
+			
+		  function checkNumbers3(url) {
+			  //do query modify global object
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			parsedObj = JSON.parse(this.responseText);
+            myFunction(parsedObj);
+			
+		}
+	};
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
+             }
+		
+		
 		function myMap() {
  // https://www.w3schools.com/js/js_json_http.asp
              function checkNumbers(url) {
@@ -105,6 +124,7 @@
 		
 			
                 checkNumbers("http://localhost:5000/orlaJSON");		
+			setInterval(checkNumbers3(), 300000);
 		
 	}	
 		
