@@ -1,6 +1,7 @@
 from flask import render_template,jsonify, g, json, Flask
 from se_group_project import app
 import sqlalchemy
+import sqlite3
 
 #app.config.from_object('config')
 
@@ -11,7 +12,7 @@ def connect_to_database():
 
 def connect_to_local_db():
     engine = sqlite3.connect('most_recent_station_data.db')
-	return engine
+    return engine
 
 #@app.before_request
 #def before_request():
@@ -59,7 +60,7 @@ def get_stations(station_id):
 	engine = connect_to_local_db()
 	engine.row_factory=sqlite3.Row
 	cur = engine.cursor()
-	rows=cur.execute('SELECT * FROM occupancy WHERE number ={} ) ;'.format(station_id))
+	rows=cur.execute('SELECT * FROM occupancy WHERE number ={} ;'.format(station_id))
 	data = []
 	for row in rows: 
 		data.append(dict(row))

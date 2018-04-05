@@ -53,7 +53,7 @@ def main():
         except requests.exception.ConnectionError as e:
             #writing error message without terminating script
             with open('logger','a') as file:
-                file.write(str(e)+"Time of error: "+str(time())+'\n')
+                file.write('Weather API:'+str(e)+"Time of error: "+str(time())+'\n')
             sleep(600)
             continue
         try:
@@ -61,7 +61,7 @@ def main():
         except requests.exception.ConnectionError as e:
             #writing error message without terminating script
             with open('logger','a') as file:
-                file.write(str(e)+ "Time of error: "+str(time())+'\n')
+                file.write('Dublin Bikes API: '+str(e)+ "Time of error: "+str(time())+'\n')
             sleep(600)
             continue
         #need to compare df(contains dynamic bike info to be saved) 
@@ -90,28 +90,23 @@ def main():
         except sqlalchemy.exc.IntegrityError as e:
             #writing error message without terminating script
             with open('logger','a') as file:
-                file.write(str(e)+ "Time of error: "+str(time())+'\n')
+                file.write('Dynamic: '+str(e)+ "Time of error: "+str(time())+'\n')
         try:
             df_weather.to_sql(name='weather',con=conn,if_exists='append',index=False)
         except sqlalchemy.exc.IntegrityError as e:
             #writing error message without terminating script
             with open('logger','a') as file:
-                file.write(str(e)+ "Time of error: "+str(time())+'\n')
+                file.write('Weather: '+str(e)+ "Time of error: "+str(time())+'\n')
 	#saves latest time to file to easily check time of latest update locally, if desired
         with open('check_file','w') as file:
             file.write(str(time()))
         #openweather cut us off requesting every 5 minutes
-        sleep(600)
-        #Updating 'most_recent_station_data.db' with latest station info
-        try:
-            most_recent_station_data_df = pd.read_sql_query('SELECT * FROM SE_group_project.dynamic, SE_group_project.static WHERE \
-            SE_group_project.dynamic.number=SE_group_project.static.number and (dynamic.number,last_update) in (SELECT dynamic.number, max(last_update)from \
-            SE_group_project.dynamic group by SE_group_project.dynamic.number);')
 
-            most_recent_station_data_df.to_sql(name = 'occupancy', con = enginesqlite, if_exists='replace',index=False, flavor='sqlite')
-        except Exception as e:
-            with open('logger','a') as file:
-                file.write(str(e)+"Time of error: "+str(time())+'\n')
+        #Updating 'most_recent_station_data.db' with latest station info
+        most_recent_station_data_df = pd.read_sql_query('SELECT d.number, d.last_update,d.available_bikes,d.available_bike_stands,d.bike_stands,d.latest_weather,s.address FROM SE_group_project.dynamic d, SE_group_project.static s WHERE s.number=d.number and (d.number,last_update) in (SELECT d.number, max(last_update)from SE_group_project.dynamic d group by d.number);',con=conn)
+
+        most_recent_station_data_df.to_sql(name = 'occupancy', con = enginesqlite, if_exists='replace',index=False, flavor='sqlite')
+        sleep(600)
 
 if __name__=='__main__':
     main()
