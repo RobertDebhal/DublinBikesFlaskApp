@@ -1,0 +1,8 @@
+/home/ubuntu/anaconda3/lib/python3.6/site-packages/pandas/io/sql.py:527: FutureWarning: the 'flavor' parameter is deprecated and will be removed in a future version, as 'sqlite' is the only supported option when SQLAlchemy is not installed.
+  _validate_flavor_parameter(flavor)
+Traceback (most recent call last):
+  File "API_scraper.py", line 112, in <module>
+    main()
+  File "API_scraper.py", line 70, in main
+    dublin_stations_test[i]['latest_weather']=check['dt']
+TypeError: 'NoneType' object is not subscriptable
