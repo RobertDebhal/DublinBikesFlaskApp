@@ -50,6 +50,10 @@ def main():
     while True:
         try:
             check=get_weather_info()
+			# had to add this line below because scarper stopped working due to  a type error object NoneType is not subscriptable:
+			# was because of this line : dublin_stations_test[i]['latest_weather']=check['dt']
+			if check==None:
+				continue
         except requests.exception.ConnectionError as e:
             #writing error message without terminating script
             with open('logger','a') as file:
@@ -58,6 +62,10 @@ def main():
             continue
         try:
             dublin_stations_test = get_contracts_info()
+			# had to add this line below because scarper stopped working due to  a type error object NoneType is not subscriptable:
+			# was because of this line : dublin_stations_test[i]['latest_weather']=check['dt']
+			if dublin_stations_test==None:
+				continue
         except requests.exception.ConnectionError as e:
             #writing error message without terminating script
             with open('logger','a') as file:
