@@ -1,0 +1,255 @@
+header{
+    margin:10px 0px 0px 0px;
+}
+body{
+margin:0;
+}
+
+/* color from http://ssvplondon.com/ */
+nav ul{
+    list-style-type:none;
+    overflow:hidden;
+    margin:0;
+    padding:0;
+    background-color: #000;
+    border-style: hidden;
+    height:60px;
+}
+/* color from http://ssvplondon.com/ */
+nav ul.sidenav{
+    max-height:none;
+    width:17.5%;
+    margin-right:2.5%
+}
+
+nav ul li{
+    float:left;
+}
+nav ul li.nofloat{
+    float:none;
+}
+/*https://www.w3schools.com/css/css_table.asp*/
+tr:nth-child(even) {
+    background:linear-gradient(#AAA,#BBB);
+}
+tr:nth-child(odd) {
+    background:linear-gradient(#FFF,#EEE);
+}
+tr:nth-child(1) {
+    background:linear-gradient(#333,#000);
+}
+.Classic.Cars{
+    background:linear-gradient(#FFF,#EEE);
+}
+a{
+    text-decoration: none;
+}
+td a:hover{
+    text-decoration: underline;
+}
+td{
+    border: none;
+}
+table{
+    border-collapse: collapse;
+}
+/*https://www.w3schools.com/css/css_table.asp*/
+nav ul li a{
+    display:block;
+    color:white;
+    text-decoration:none;
+    text-align:center;
+    padding: 12px 12px;
+    padding-top:20px;
+    max-height: 60px;
+    font-size:16px;
+}
+nav ul li a i{
+    padding-top:10px;
+}
+/* color from http://ssvplondon.com/ */
+nav ul li a:hover{
+    color:goldenrod;
+    border-bottom: 2px solid goldenrod;
+    padding-bottom: 2px;
+}
+/* color from http://ssvplondon.com/ */
+/*{
+    /*box-sizing:border-box;
+}*/
+/*.active{
+    background-color:#444;
+}*/
+p{
+    text-align:center;
+    font-size: 120%;
+}
+.column {
+    float: left;
+    width: 60%;
+    padding:8px;
+}
+/*Border style idea from svp.ie*/
+.columnright {
+    float: left;
+    width: 40%;
+    border: solid 2px lightgray;
+    border-radius:8px;
+    padding:5px;
+}
+/*Border style idea from svp.ie*/
+.columnright p,.column p{
+    text-align:left;
+    margin-left:10px;
+}
+
+li a.icon{
+    padding:3px 0px 0px 3px;
+    min-height:63px;
+    width:50px;
+}
+
+/* Below taken from W3schools.com to clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both
+}
+/* Above taken from W3schools.com to clear floats after the columns */
+/*colours and idea for design from svp.ie*/
+.footer{
+    background-color:#676c70;
+    color:white;
+    text-align:center;
+    margin:0;
+    padding:10px 0px 20px 0px;
+    font-weight:none;
+}
+/*colours and idea for design from svp.ie*/
+.img1 {
+    float: right;
+    margin:10px 10px 20px 20px;
+    width:50%;
+    height:50%;     
+}
+.img2{
+    float: right;
+    margin:10px 10px 20px 20px;
+    width:33%;
+    height:33%; 
+}
+.img3{
+    opacity:0.5;
+    float: left;
+    margin:10px 10px 10px 10px;
+    width:285px;
+    height:203px; 
+}
+.img3:hover{
+    opacity:1;
+}
+h2{
+    color:#233d5b;
+    font-weight:bold;
+}
+.autofit {
+    overflow: auto;
+}
+/* wrapper idea from https://medialoot.com/blog/how-to-code-a-homepage-template-with-html5-and-css3/ Adjusted to be responsive  */
+.wrapper {
+	margin: auto;
+	padding: 0 10px;
+	width: 90%;
+    margin-top:20px;
+    margin-bottom:20px;
+}
+/* wrapper idea from https://medialoot.com/blog/how-to-code-a-homepage-template-with-html5-and-css3/ Adjusted to be responsive  */
+form input{
+    padding:0;
+    margin:0;
+}
+.contactform{
+    width:80%;
+    border-radius:5px;
+    border-width:1px;
+    border-color:lightgray;
+    border-style:solid;
+    margin:0;
+    padding:0;
+    height:30px;
+    font-size:16px;
+}
+form p{
+    display:inline-block;
+    width:15%;
+    margin-right:20px;
+}
+.grad1{
+    background:linear-gradient(gray,#565b60);
+}
+.grad2{
+    background:linear-gradient(#333,#000);
+}
+table{
+    text-align:center;
+    width:100%;
+}
+th{
+    text-align:center;
+    color:#FFF;
+    font-weight:bold;
+}
+td{
+    padding-right:10px;
+    padding-left:10px;
+    height:50px;
+}
+th{
+    padding-right:10px;
+    padding-left:10px;
+    height:50px;
+}
+.footertop{
+    height:50px;
+    width:100%;
+    color:white;
+    padding-right:5%;
+    overflow:hidden;
+    font-weight:none;
+}
+div.footertop form input,div.footertop h5{
+    height:20px;
+    margin-top:15px;
+    margin-bottom:15px;
+}
+div.footertop form{
+    height:50px;
+    float:right;
+}
+div.footertop h5{
+    margin-left:5%;
+    float:left;
+}
+.select{
+    width:40%;
+}
+.input{
+    width:20%;
+}
+h1{
+    float:left;
+    margin-top:42px;
+    width:50%;
+}
+.test1{
+    width:47.5%;
+    margin-right:2.5%;
+}
+.test2{
+    width:47.5%;
+    margin-left:2.5%;
+}
+.test3{
+    width:47.5%;
+    margin-left:2.5%;
+}
