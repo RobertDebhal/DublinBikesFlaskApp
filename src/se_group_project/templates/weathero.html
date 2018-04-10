@@ -100,11 +100,11 @@
             var radiusOut;
 			var colorOut;
             var ratio = arr[i].available_bikes/arr[i].bike_stands;
-            if (ratio==0){
+            if (ratio<0.001){
                 colorOut='#FF0000';
 			    radiusOut=40;
             } 
-			else if (ratio<.6&&ratio>0){
+			else if (ratio<.6&&ratio>0.001){
 			    colorOut='#0000FF';
 			    radiusOut=60;
 			}
@@ -135,10 +135,11 @@
                 success: function(data) { 
                         infowindow.setContent('<b>Station Number: '+data[0].number +'</b><br>'+ data[0].address+'<br>Available bikes: '+data[0].available_bikes+"<br>Available stands: "+data[0].available_bike_stands);  
 						infowindow.open(map, cityCircle);
-                    
+
                         google.charts.load('current', {'packages': ['corechart','bar']});
-                        google.charts.setOnLoadCallback(drawInfoWindowChart);
-                    
+                        google.charts.setOnLoadCallback(drawInfoWindowChart());
+						google.charts.load('current', {'packages':['corechart']});
+                    	google.charts.setOnLoadCallback(drawPieChart(data[0].available_bikes, data[0].available_bike_stands));
 						closeLastOpenedInfoWindow();
 						lastOpenedInfoWindow = infowindow; 
                         drawInfoWindowChart();
@@ -168,7 +169,7 @@
 				chart_data.addRows([[new Date(2018-03-26),17.343312],[new Date(2018-03-27),17.328807],[new Date(2018-03-28),18.066599]]);
 				
 						var chart = new google.visualization.ColumnChart(
-        					document.getElementById('graph1'));
+        					document.getElementById('graph2'));
 
       					chart.draw(chart_data, options);
 						
@@ -199,6 +200,59 @@
  };
 // })  
          }
+			
+			
+	 function drawPieChart(free_bikes, free_bike_stands) {
+	/*		 var jqxhr = $.getJSON("http://localhost:5000/available/" +
+			cityCircle.number,      function (data) {		 */
+				 
+						//data = JSON.parse(data.data);
+				 
+							
+			 	//		console.log('data');
+					 	//var node = document.createElement('div')
+							
+				 	//chart = new google.visualization.ColumnChart(node);
+				 
+				 var chart_data = google.visualization.arrayToDataTable([
+          ['Status', 'Number of bikes'],
+			['Available bike stands',  free_bike_stands],
+          ['Available bikes',    free_bikes]
+          
+        
+        ]);
+				 		
+				
+						//_.forEach(data, function (row) {
+				 		//		//chart_data.addRow([new Date(row[0]), row[1]]);
+				 		//}
+	
+				 
+			 //chart.draw(chart_data, options);
+			 //infowindow.setContent(node);
+			 //infowindow.open(marker.getMap(), marker);
+			 //}).fail(function () {
+	
+			// console.log("error");
+				
+				var options = {
+					 title: 'Bike availability'
+ };
+// })  
+		 
+		  var chart = new google.visualization.PieChart(document.getElementById('graph1'));
+
+      					chart.draw(chart_data, options);
+         }		
+			
+			
+			
+			
+			
+			
+			
+			
+			
             
         function closeLastOpenedInfoWindow(){
 			if (lastOpenedInfoWindow) {
@@ -225,7 +279,7 @@
     <div class="wrapper" style="width:80%">
     <div style="width:50%;float:left;min-height:25px;">
     </div>
-    <div id="graph2" style="width:50%;float:left;min-height:25px;">
+    <div  style="width:50%;float:left;min-height:25px;">
     </div>
     <div id="graph1"style="width:50%;float:left;">
     </div>
