@@ -65,6 +65,8 @@ def main():
               # had to add this line below because scarper stopped working due to  a type error object NoneType is not subscriptable:
               # was because of this line : dublin_stations_test[i]['latest_weather']=check['dt']
             if dublin_stations_test==None:
+				with open('logger','a') as file:
+                    file.write('Response code NOT 200 ---- Time: "+str(time())+\n\n')
                 continue
         except requests.exception.ConnectionError as e:
             #writing error message without terminating script
