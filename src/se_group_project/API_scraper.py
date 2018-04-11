@@ -94,17 +94,18 @@ def main():
                                    'sunrise':[check['sys']['sunrise']],'sunset':[check['sys']['sunset']]})
 	#appending data frame to SQL table in RDS
         try:
-            df.to_sql(name='dynamic',con=conn,if_exists='append',index=False)
-        except sqlalchemy.exc.IntegrityError as e:
-            #writing error message without terminating script
-            with open('logger','a') as file:
-                file.write('Dynamic: '+str(e)+ "Time of error: "+str(time())+'\n')
-        try:
             df_weather.to_sql(name='weather',con=conn,if_exists='append',index=False)
         except sqlalchemy.exc.IntegrityError as e:
             #writing error message without terminating script
             with open('logger','a') as file:
                 file.write('Weather: '+str(e)+ "Time of error: "+str(time())+'\n')
+        try:
+            df.to_sql(name='dynamic',con=conn,if_exists='append',index=False)
+        except sqlalchemy.exc.IntegrityError as e:
+            #writing error message without terminating script
+            with open('logger','a') as file:
+                file.write('Dynamic: '+str(e)+ "Time of error: "+str(time())+'\n')
+        
 	#saves latest time to file to easily check time of latest update locally, if desired
         with open('check_file','w') as file:
             file.write(str(time()))
