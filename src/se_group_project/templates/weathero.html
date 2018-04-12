@@ -55,20 +55,7 @@
 		var stationsLatestData;
 		
 	
-			
-		  function checkNumbers3(url) {
-			  //do query modify global object
-	var xmlhttp = new XMLHttpRequest();
-	xmlhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			parsedObj = JSON.parse(this.responseText);
-            myFunction(parsedObj);
-			
-		}
-	};
-	xmlhttp.open("GET", url, true);
-	xmlhttp.send();
-             }
+	
 		
 		
 		function myMap() {
@@ -143,14 +130,60 @@
                         google.charts.load('current', {'packages': ['corechart','bar']});
                         google.charts.setOnLoadCallback(drawInfoWindowChart);
 						google.charts.load('current', {'packages':['corechart']});
-                    	google.charts.setOnLoadCallback(drawPieChart(data[0].available_bikes, data[0].available_bike_stands));
+                    	google.charts.setOnLoadCallback(init);
 				//		drawInfoWindowChart();
 						
 						
 						
                 }  
-            });
-                   
+            });     
+				   function init(){
+				       drawPieChart(cityCircle);
+				   }
+                 	 function drawPieChart(cityCircle) {
+			 var jqxhr = $.getJSON("http://localhost:5000/available/" +
+			cityCircle.number,      function (data) {		
+				 
+						
+				 
+							
+			 		console.log('data');
+					 	//var node = document.createElement('div')
+							
+				 	//chart = new google.visualization.ColumnChart(node);
+				 
+				 var chart_data = google.visualization.arrayToDataTable([
+          ['Status', 'Number of bikes'],
+			 ['Available bikes',  data[0].available_bikes  ],
+			['Available bike stands',data[0].available_bike_stands  ]
+         
+          
+        
+        ]);
+				 		
+				
+						//_.forEach(data, function (row) {
+				 		//		//chart_data.addRow([new Date(row[0]), row[1]]);
+				 		//}
+	
+				 
+			 //chart.draw(chart_data, options);
+			 //infowindow.setContent(node);
+			 //infowindow.open(marker.getMap(), marker);
+			 //}).fail(function () {
+	
+			// console.log("error");
+				
+				var options = {
+					 title: 'Bike availability'
+ };
+// })  
+		 
+		  var chart = new google.visualization.PieChart(document.getElementById('graph1'));
+
+      					chart.draw(chart_data, options);
+         })		
+			 }  
                }
         })(cityCircle,contentString,infowindow)); 
         }
@@ -208,49 +241,7 @@
          }
 			
 			
-	 function drawPieChart(free_bikes, free_bike_stands) {
-	/*		 var jqxhr = $.getJSON("http://localhost:5000/available/" +
-			cityCircle.number,      function (data) {		 */
-				 
-						//data = JSON.parse(data.data);
-				 
-							
-			 	//		console.log('data');
-					 	//var node = document.createElement('div')
-							
-				 	//chart = new google.visualization.ColumnChart(node);
-				 
-				 var chart_data = google.visualization.arrayToDataTable([
-          ['Status', 'Number of bikes'],
-			['Available bike stands',  free_bike_stands],
-          ['Available bikes',    free_bikes]
-          
-        
-        ]);
-				 		
-				
-						//_.forEach(data, function (row) {
-				 		//		//chart_data.addRow([new Date(row[0]), row[1]]);
-				 		//}
-	
-				 
-			 //chart.draw(chart_data, options);
-			 //infowindow.setContent(node);
-			 //infowindow.open(marker.getMap(), marker);
-			 //}).fail(function () {
-	
-			// console.log("error");
-				
-				var options = {
-					 title: 'Bike availability'
- };
-// })  
-		 
-		  var chart = new google.visualization.PieChart(document.getElementById('graph1'));
 
-      					chart.draw(chart_data, options);
-         }		
-			
 			
 			
 			
@@ -270,7 +261,7 @@
 		
 			
                 checkNumbers("http://localhost:5000/orlaJSON");		
-			setInterval(checkNumbers3(), 300000);
+		//	setInterval(checkNumbers3(), 300000);
 		
 	}	
 		
