@@ -53,6 +53,9 @@ def main():
        # had to add this line below because scarper stopped working due to  a type error object NoneType is not subscriptable:
 	# was because of this line : dublin_stations_test[i]['latest_weather']=check['dt'] - due to API query - response !=200 so function defaults returning none
             if check==None:
+                #restart loop if bad response from API. Also write error to logger file
+                with open('logger','a') as file:
+                   file.write('Response code NOT 200 ---- Time: "+str(time())+\n\n')
                 continue
         except requests.exceptions.ConnectionError as e:
             #writing error message without terminating script
@@ -65,6 +68,7 @@ def main():
               # had to add this line below because scarper stopped working due to  a type error object NoneType is not subscriptable:
               # was because of this line : dublin_stations_test[i]['latest_weather']=check['dt']
             if dublin_stations_test==None:
+                #restart loop if bad response from API. Also write error to logger file
                 with open('logger','a') as file:
                    file.write('Response code NOT 200 ---- Time: "+str(time())+\n\n')
                 continue
