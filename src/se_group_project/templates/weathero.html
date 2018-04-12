@@ -135,14 +135,19 @@
                 success: function(data) { 
                         infowindow.setContent('<b>Station Number: '+data[0].number +'</b><br>'+ data[0].address+'<br>Available bikes: '+data[0].available_bikes+"<br>Available stands: "+data[0].available_bike_stands);  
 						infowindow.open(map, cityCircle);
-
-                        google.charts.load('current', {'packages': ['corechart','bar']});
-                        google.charts.setOnLoadCallback(drawInfoWindowChart());
-						google.charts.load('current', {'packages':['corechart']});
-                    	google.charts.setOnLoadCallback(drawPieChart(data[0].available_bikes, data[0].available_bike_stands));
 						closeLastOpenedInfoWindow();
 						lastOpenedInfoWindow = infowindow; 
-                        drawInfoWindowChart();
+					
+						// if  infowindow.setContent, infowindow.open, closeLastOpenedInfoWindow, lastOpenedInfoWindow  are above google.charts 1st  			
+					
+                        google.charts.load('current', {'packages': ['corechart','bar']});
+                        google.charts.setOnLoadCallback(drawInfoWindowChart);
+						google.charts.load('current', {'packages':['corechart']});
+                    	google.charts.setOnLoadCallback(drawPieChart(data[0].available_bikes, data[0].available_bike_stands));
+				//		drawInfoWindowChart();
+						
+						
+						
                 }  
             });
                    
@@ -275,7 +280,7 @@
 		
 		
 	</script>
-	<script src="https://maps.googleapis.com/maps/api/js?callback=myMap&key=AIzaSyDnhjzNlsrZqK3A_HtAfH0ya2hmN0qQAzs" ></script>
+	<script src="https://maps.googleapis.com/maps/api/js?callback=myMap&key=AIzaSyDnhjzNlsrZqK3A_HtAfH0ya2hmN0qQAzs" async defer ></script>
 	
     <div class="wrapper" style="width:80%">
     <div style="width:50%;float:left;min-height:25px;">
