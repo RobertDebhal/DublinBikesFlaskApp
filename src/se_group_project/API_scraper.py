@@ -54,7 +54,7 @@ def main():
 	# was because of this line : dublin_stations_test[i]['latest_weather']=check['dt'] - due to API query - response !=200 so function defaults returning none
             if check==None:
                 continue
-        except requests.exception.ConnectionError as e:
+        except requests.exceptions.ConnectionError as e:
             #writing error message without terminating script
             with open('logger','a') as file:
                 file.write('Weather API:'+str(e)+"Time of error: "+str(time())+'\n')
@@ -65,10 +65,10 @@ def main():
               # had to add this line below because scarper stopped working due to  a type error object NoneType is not subscriptable:
               # was because of this line : dublin_stations_test[i]['latest_weather']=check['dt']
             if dublin_stations_test==None:
-				with open('logger','a') as file:
-                    file.write('Response code NOT 200 ---- Time: "+str(time())+\n\n')
+                with open('logger','a') as file:
+                   file.write('Response code NOT 200 ---- Time: "+str(time())+\n\n')
                 continue
-        except requests.exception.ConnectionError as e:
+        except requests.exceptions.ConnectionError as e:
             #writing error message without terminating script
             with open('logger','a') as file:
                 file.write('Dublin Bikes API: '+str(e)+ "Time of error: "+str(time())+'\n')
@@ -78,7 +78,10 @@ def main():
         #to static station list to check for new stations 
         for i in range(len(dublin_stations_test)):
             dublin_stations_test[i]['latest_weather']=check['dt']
-            
+            #Do not use station if not updating
+            if dublin_stations_test[i]['status']=="CLOSED":
+                to_delete=i
+        del(dublin_stations_test[to_delete])
         static = ['contract_name','name','address','position','banking','bonus']
          
         #converting json to data frame
