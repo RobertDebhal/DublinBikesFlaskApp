@@ -47,16 +47,9 @@
 	<!--http://biostall.com/loading-infowindow-content-using-ajax-with-google-maps-api/-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" type="text/javascript"></script>
 	<script>
-        
-        
 		var lastOpenedInfoWindow;
 		var parsedObj;
-		
 		var stationsLatestData;
-		
-	
-	
-		
 		
 		function myMap() {
  // https://www.w3schools.com/js/js_json_http.asp
@@ -72,10 +65,8 @@
 	xmlhttp.open("GET", url, true);
 	xmlhttp.send();
              }
-            
-            
+			
         function myFunction(arr) {
-      
 			var mapOptions = {
 				center: new google.maps.LatLng(53.350140, -6.266155),
 				zoom: 14,
@@ -116,7 +107,8 @@
             var infowindow = new google.maps.InfoWindow();
             var num = cityCircle.number;
            google.maps.event.addListener(cityCircle,'click',(function( cityCircle,contentString,infowindow) {
-               return function(){
+               return function(){ 
+				     document.location.href="#.loc";
 				   $.ajax({  
                 url: "http://localhost:5000/available/"+cityCircle.number,  
                 success: function(data) { 
@@ -128,57 +120,72 @@
 						// if  infowindow.setContent, infowindow.open, closeLastOpenedInfoWindow, lastOpenedInfoWindow  are above google.charts 1st  			
 					
                         google.charts.load('current', {'packages': ['corechart','bar']});
-                        google.charts.setOnLoadCallback(drawInfoWindowChart);
+                        google.charts.setOnLoadCallback(init_iwc);
 						google.charts.load('current', {'packages':['corechart']});
                     	google.charts.setOnLoadCallback(init);
-				//		drawInfoWindowChart();
-						
-						
 						
                 }  
             });     
 				   function init(){
 				       drawPieChart(cityCircle);
 				   }
-                 	 function drawPieChart(cityCircle) {
-			 var jqxhr = $.getJSON("http://localhost:5000/available/" +
-			cityCircle.number,      function (data) {		
+				   function init_iwc(){
+				       drawInfoWindowChart(cityCircle);
+				   }
+				   
+				   function drawInfoWindowChart(cityCircle) {
+					   
+				    var jqxhr = $.getJSON("http://localhost:5000/available/" +cityCircle.number,      function (data) {		
 				 
+				 
+				 var chart_data = new google.visualization.DataTable();
+				 chart_data.addColumn('timeofday', 'Time of Day');
+				 chart_data.addColumn('number', 'available_bikes')
+				 chart_data.addColumn('number', 'available_bike_stands');
+				 		
+				chart_data.addRows([[{v: [9, 0, 0], f: '9 am'},data[0].available_bikes,data[0].available_bike_stands],
+									[{v: [11, 0, 0], f: ' 11 am'},data[0].available_bikes,data[0].available_bike_stands],
+								   [{v: [13, 0, 0], f: ' 1 pm'},data[0].available_bikes,data[0].available_bike_stands],
+								   [{v: [15, 0, 0], f: '3 pm'},data[0].available_bikes,data[0].available_bike_stands],
+								   [{v: [17, 0, 0], f: '5 pm'},data[0].available_bikes,data[0].available_bike_stands]]);		
 						
+				var options = {
+					 title: 'Availability',
+					 colors: ['#9575cd',
+					'#33ac71'],
+					 hAxis: {
+					 title: 'Time of Day',
+					 viewWindow: {
+            min: [7, 30, 0],
+            max: [17, 30, 0]
+          }
+					 },
+					 vAxis: { title: '#'
+					 }
+ };
+var chart = new google.visualization.ColumnChart(
+        					document.getElementById('graph2'));
+
+      					chart.draw(chart_data, options);
+         })	
+					  
+					   
+			
+         }
+				  		
+                 	 function drawPieChart(cityCircle) {
+			 var jqxhr = $.getJSON("http://localhost:5000/available/" +cityCircle.number,      function (data) {		
 				 
-							
-			 		console.log('data');
-					 	//var node = document.createElement('div')
-							
-				 	//chart = new google.visualization.ColumnChart(node);
 				 
 				 var chart_data = google.visualization.arrayToDataTable([
           ['Status', 'Number of bikes'],
 			 ['Available bikes',  data[0].available_bikes  ],
 			['Available bike stands',data[0].available_bike_stands  ]
-         
-          
-        
         ]);
 				 		
-				
-						//_.forEach(data, function (row) {
-				 		//		//chart_data.addRow([new Date(row[0]), row[1]]);
-				 		//}
-	
-				 
-			 //chart.draw(chart_data, options);
-			 //infowindow.setContent(node);
-			 //infowindow.open(marker.getMap(), marker);
-			 //}).fail(function () {
-	
-			// console.log("error");
-				
 				var options = {
 					 title: 'Bike availability'
  };
-// })  
-		 
 		  var chart = new google.visualization.PieChart(document.getElementById('graph1'));
 
       					chart.draw(chart_data, options);
@@ -188,87 +195,16 @@
         })(cityCircle,contentString,infowindow)); 
         }
     
-        function drawInfoWindowChart() {
-	/*		 var jqxhr = $.getJSON("http://localhost:5000/available/" +
-			cityCircle.number,      function (data) {		 */
-				 
-						//data = JSON.parse(data.data);
-				 
-							
-			 			console.log('data');
-					 	//var node = document.createElement('div')
-							
-				 	//chart = new google.visualization.ColumnChart(node);
-				 
-				 	var chart_data = new google.visualization.DataTable();
-			 			chart_data.addColumn('datetime', 'Time of Day');
-				 		chart_data.addColumn('number', '#');
-				 		
-				chart_data.addRows([[new Date(2018-03-26),17.343312],[new Date(2018-03-27),17.328807],[new Date(2018-03-28),18.066599]]);
-				
-						var chart = new google.visualization.ColumnChart(
-        					document.getElementById('graph2'));
-
-      					chart.draw(chart_data, options);
-						
-			 			//_.forEach(data, function (row) {
-				 		//		//chart_data.addRow([new Date(row[0]), row[1]]);
-				 		//}
-	
-				 
-			 //chart.draw(chart_data, options);
-			 //infowindow.setContent(node);
-			 //infowindow.open(marker.getMap(), marker);
-			 //}).fail(function () {
-	
-			// console.log("error");
-				
-				var options = {
-					 title: 'Availability',
-					 colors: ['#9575cd',
-					'#33ac71'],
-					 hAxis: {
-					 title: 'Time of Day',
-					 format: "E HH:mm",
-					 slantedText: true,
-					 slantedTextAngle: 30,
-					 },
-					 vAxis: { title: '#'
-					 }
- };
-// })  
-            document.location.href="#.loc";   
-         }
-			
-			
-
-			
-			
-			
-			
-			
-			
-			
-			
-            
+         
         function closeLastOpenedInfoWindow(){
 			if (lastOpenedInfoWindow) {
         lastOpenedInfoWindow.close();
     }
 }
-         
         }
-		
-			
                 checkNumbers("http://localhost:5000/orlaJSON");		
-		//	setInterval(checkNumbers3(), 300000);
 		
-	}	
-		
-	
-		
-		
-		
+	}		
 		
 	</script>
 	<script src="https://maps.googleapis.com/maps/api/js?callback=myMap&key=AIzaSyDnhjzNlsrZqK3A_HtAfH0ya2hmN0qQAzs" async defer ></script>
