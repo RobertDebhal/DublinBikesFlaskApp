@@ -48,10 +48,12 @@ def weather(name=name):
 
 @app.route('/orlaJSON')
 def JSONo():
-	engine = get_db()
+	engine = connect_to_local_db()
+	engine.row_factory=sqlite3.Row
+	cur = engine.cursor()
+	rows=cur.execute('SELECT s.number,s.lat,s.lng,o.available_bikes,o.bike_stands FROM static s, occupancy o where s.number = o.number')
 	data = []
-	rows = engine.execute('SELECT * FROM static s, dynamic d where  s.number = d.number AND ( s.number,d.last_update) IN (SELECT dy.number, MAX(dy.last_update) FROM dynamic dy group by dy.number) ')
-	for row in rows:
+	for row in rows: 
 		data.append(dict(row))
 	return jsonify(data) 
 
