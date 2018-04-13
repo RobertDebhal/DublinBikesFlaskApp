@@ -135,19 +135,57 @@
 				   
 				   function drawInfoWindowChart(cityCircle) {
 					   
-				    var jqxhr = $.getJSON("http://localhost:5000/available/" +cityCircle.number,      function (data) {		
+				    var jqxhr = $.getJSON("http://localhost:5000/rain/" +cityCircle.number,      function (data) {		
 				 
 				 
 				 var chart_data = new google.visualization.DataTable();
 				 chart_data.addColumn('timeofday', 'Time of Day');
 				 chart_data.addColumn('number', 'available_bikes')
 				 chart_data.addColumn('number', 'available_bike_stands');
-				 		
-				chart_data.addRows([[{v: [9, 0, 0], f: '9 am'},data[0].available_bikes,data[0].available_bike_stands],
-									[{v: [11, 0, 0], f: ' 11 am'},data[0].available_bikes,data[0].available_bike_stands],
-								   [{v: [13, 0, 0], f: ' 1 pm'},data[0].available_bikes,data[0].available_bike_stands],
-								   [{v: [15, 0, 0], f: '3 pm'},data[0].available_bikes,data[0].available_bike_stands],
-								   [{v: [17, 0, 0], f: '5 pm'},data[0].available_bikes,data[0].available_bike_stands]]);		
+				var i;
+				var listRaining=[];
+				var listNotRaining=[];
+				var j;
+				for (j=0;j<24;j++){
+					listRaining[j]=0;
+					listNotRaining[j]=0;
+				}
+				for (i = 0;i<data.length;i++){
+				    if(data[i].rain_status=="Raining"){
+						listRaining[data[i].hours]=data[i].average_available_rain;
+					}
+					else{
+						listNotRaining[data[i].hours]=data[i].average_available_no_rain;
+					}
+				}		
+				console.log(listRaining);
+				chart_data.addRows([[{v: [0, 0, 0], f: '9 am'},listRaining[0],listNotRaining[0]],
+									[{v: [1, 0, 0], f: '9 am'},listRaining[1],listNotRaining[1]],
+									[{v: [2, 0, 0], f: '9 am'},listRaining[2],listNotRaining[2]],
+									[{v: [3, 0, 0], f: '9 am'},listRaining[3],listNotRaining[3]],
+									[{v: [4, 0, 0], f: '9 am'},listRaining[4],listNotRaining[4]],
+									[{v: [5, 0, 0], f: '9 am'},listRaining[5],listNotRaining[5]],
+									[{v: [6, 0, 0], f: '9 am'},listRaining[6],listNotRaining[6]],
+									[{v: [7, 0, 0], f: '9 am'},listRaining[7],listNotRaining[7]],
+									[{v: [8, 0, 0], f: '9 am'},listRaining[8],listNotRaining[8]],
+									[{v: [9, 0, 0], f: '9 am'},listRaining[9],listNotRaining[9]],
+									[{v: [10, 0, 0], f: '9 am'},listRaining[10],listNotRaining[10]],
+									[{v: [11, 0, 0], f: '9 am'},listRaining[11],listNotRaining[11]],
+									[{v: [12, 0, 0], f: '9 am'},listRaining[12],listNotRaining[12]],
+									[{v: [13, 0, 0], f: '9 am'},listRaining[13],listNotRaining[13]],
+									[{v: [14, 0, 0], f: '9 am'},listRaining[14],listNotRaining[14]],
+									[{v: [15, 0, 0], f: '9 am'},listRaining[15],listNotRaining[15]],
+									[{v: [16, 0, 0], f: ' 11 am'},listRaining[16],listNotRaining[16]],
+								   [{v: [17, 0, 0], f: ' 1 pm'},listRaining[17],listNotRaining[17]],
+								   [{v: [18, 0, 0], f: '3 pm'},listRaining[18],listNotRaining[18]],
+								   [{v: [19, 0, 0], f: '3 pm'},listRaining[19],listNotRaining[19]],
+								   [{v: [20, 0, 0], f: '3 pm'},listRaining[20],listNotRaining[20]],
+								   [{v: [21, 0, 0], f: '3 pm'},listRaining[21],listNotRaining[21]],
+								   [{v: [22, 0, 0], f: '3 pm'},listRaining[22],listNotRaining[22]],
+								   [{v: [23, 0, 0], f: '5 pm'},listRaining[23],listNotRaining[23]]]);		
+						
+						
+						
 						
 				var options = {
 					 title: 'Availability',
