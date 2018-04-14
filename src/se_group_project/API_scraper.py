@@ -39,6 +39,16 @@ def get_weather_info():
         return json.loads(response.content.decode('utf-8'))
     else:
         return None
+
+def make_rain_table(enginesqlite,conn):
+    graph_df = pd.read_sql_query('SELECT d.number, d.last_update,d.available_bikes,d.available_bike_stands,d.latest_weather,w.description FROM SE_group_project.dynamic d,SE_group_project.weather w WHERE w.date=d.latest_weather;',con=conn)
+    graph_df['date_time']=pd.to_datetime(graph_df['last_update']/1000, unit='s')
+    graph_df['date_time'].head()
+    graph_df['hours']= graph_df['date_time'].dt.hour
+    graph_df['rain_status']=""
+    graph_df.loc[graph_df['description'] == 'moderate rain', ['rain_status']] = 'Raining'
+    graph_df.loc[graph_df['description'] != 'moderate rain', ['rain_status']] = 'Not Raining'
+    graph_df.to_sql(name = 'rain_occupancy', con = enginesqlite, if_exists='replace',index=False, flavor='sqlite')
     
 def main():
     #if doesn't exist make table
@@ -50,7 +60,7 @@ def main():
     while True:
         try:
             check=get_weather_info()
-       # had to add this line below because scarper stopped working due to  a type error object NoneType is not subscriptable:
+       # had to add this line below because scraper stopped working due to  a type error object NoneType is not subscriptable:
 	# was because of this line : dublin_stations_test[i]['latest_weather']=check['dt'] - due to API query - response !=200 so function defaults returning none
             if check==None:
                 #restart loop if bad response from API. Also write error to logger file
@@ -124,6 +134,9 @@ def main():
         most_recent_station_data_df = pd.read_sql_query('SELECT d.number, d.last_update,d.available_bikes,d.available_bike_stands,d.bike_stands,d.latest_weather,s.address FROM SE_group_project.dynamic d, SE_group_project.static s WHERE s.number=d.number and (d.number,last_update) in (SELECT d.number, max(last_update)from SE_group_project.dynamic d group by d.number);',con=conn)
 
         most_recent_station_data_df.to_sql(name = 'occupancy', con = enginesqlite, if_exists='replace',index=False, flavor='sqlite')
+        
+        make_rain_table(enginesqlite,conn)
+        
         sleep(600)
 
 if __name__=='__main__':
