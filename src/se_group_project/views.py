@@ -68,6 +68,22 @@ def get_stations(station_id):
 		data.append(dict(row))
 	return jsonify(data) 
 
+@app.route("/rain/<int:station_id>")
+def get_rain(station_id):
+	engine = connect_to_local_db()
+	engine.row_factory=sqlite3.Row
+	cur = engine.cursor()
+	cur2 = engine.cursor()
+	rows=cur.execute('SELECT AVG(available_bikes) as average_available_rain, number, rain_status, hours FROM rain_occupancy WHERE number ={} and rain_status="Raining" GROUP BY hours;'.format(station_id))
+	rows2=cur2.execute('SELECT AVG(available_bikes) as average_available_no_rain, number, rain_status, hours FROM rain_occupancy WHERE number ={} and rain_status="Not Raining" GROUP BY hours;'.format(station_id))
+	print(rows2)
+	data = []
+	for row in rows: 
+		data.append(dict(row))
+	for row in rows2:
+		data.append(dict(row))
+	return jsonify(data) 
+	
 
 
 
