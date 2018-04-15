@@ -12,52 +12,40 @@
     <!-- credit to fontawesome.io --> 
     <link rel="stylesheet" type="text/css" href="static/Assignment3_css.css">
 	<style>
-.dropbtn {
-    background-color:  #333333;
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-}
 
-.dropbtn:hover, .dropbtn:focus {
-    background-color: #737373;
-}
+/*---------------------------------------------------*/
+#writing_for_dropdown{color: white;
+	font-size: 16px;
+		}
+		
+		
+		
+ul.dropdown2                         { position: relative; width: 100%;color: white; }
+ul.dropdown2 li                      { font-weight: bold; float: left; width: 180px; background: #333333; position: relative; color: white;}
+ul.dropdown2 a:hover		         { color: #333333; }
+ul.dropdown2 li a                    { display: block; padding: 12px 8px; color: #222; position: relative; z-index: 2000; }
+ul.dropdown2 li a:hover,
+ul.dropdown2 li a.hover              { background: #737373; position: relative; }
 
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
 
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f1f1f1;
-    min-width: 160px;
-    overflow: auto;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-
-.dropdown-content a {
-    color: black;
-    padding: 10px 10px;
-    text-decoration: none;
-    display: block;
-}
-
-.dropdown a:hover {background-color: #ddd}
-
-.show {display:block;}
+/* 
+	LEVEL TWO
+*/
+ul.dropdown2 ul 					{ display: none; position: absolute; top: 0; left: 0; width: 180px; z-index: 1000; }
+ul.dropdown2 ul li 					{ font-weight: normal; background: #f6f6f6; color: #000; border-bottom: 1px solid #ccc; }
+ul.dropdown2 ul li a				{ display: block; background: #eee !important; } 
+ul.dropdown2 ul li a:hover			{ display: block; background: #ddd !important; } 
+	
 	</style>
 </head>
-<body id="body">
+<body id="body" onload="startTime()">
+<!--	<div  style="float:right;" id="txt"></div>  --->
+
 	<!-------------------------------------------Above the navbar -------------------------->
     <div class="wrapper" style="width:95%">
     <div style="height:80px;overflow:hidden;margin:0">
-    <div style="width:40%;float:left;">
-    <h1 style="margin-top:25px;">Dublin Bikes</h1>
+    <div style="width:45%;float:left;">
+		<h1 style="margin-top:25px;font-family:'Courier';"><b>Dublin Bikes</b></h1>
     </div>
     <div style="width:50%;float:left;">
     <a href=http://www.dublinbikes.ie/ target="_blank"><img alt="Bike Logo" src="static/bike_logo.jpeg" style="float:right" class = "logo_image"></a>
@@ -68,11 +56,16 @@
     <nav>
         <div style="margin-bottom:0px;">
         <ul class="grad2">
-    <li style="margin-left: 10%" class="active"><a href="Index.php">Enter Your Location</a></li>
-    <li style="float:right;margin-right:12.5%;"><a href=https://www.instagram.com/explore/tags/dublinbikes/ target="_blank" class="icon" style="min-height:63px;"><i class="fa fa-instagram fa-fw" style="font-size:35px;"></i></a></li> 
+    <li style="float:right;margin-right:4%"><a href='#' class="icon" style="font-size:30px;color:white;"  id='txt'></a></li> 
+<li style="float:right;margin-right:2%"><a href='#' class="icon"  style="font-size:30px;color:white;"  id='icon_info'></a></li>  
+			
+	<li style="float:right;margin-right:2%"><a href='#' class="icon"  style="font-size:30px;color:white;"  id='temp_info'></a></li>  
+			
+    <li style="float:right;margin-right:2.5%;"><a href=https://www.instagram.com/explore/tags/dublinbikes/ target="_blank" class="icon" style="min-height:63px;"><i class="fa fa-instagram fa-fw" style="font-size:35px;"></i></a></li> 
     <li style="float:right;"><a href=https://www.facebook.com/dublinbikes/  target="_blank" class="icon" style="min-height:63px;"><i class="fa fa-facebook fa-fw" style="font-size:35px"></i></a></li>
     <li style="float:right;"><a href=https://twitter.com/dublinbikes2go target="_blank" class="icon" style="min-height:63px;"><i class="fa fa-twitter fa-fw" style="font-size:35px"></i></a></li> 
-        </ul>
+			
+			</ul>
     </div>
     </nav>
     <!--<br> <br><br>-->
@@ -96,59 +89,62 @@
 	<div  style="width:50%;float:left;min-height:25px;">
     </div>
 		  
-	<!-- ------------------------ Day dropdown------------------> 
-		  
-	<div class="dropdown"  style="width:10%;float:left;">
-	<button onclick="myFunction()" class="dropbtn">Select a Day</button>
-  	<div id="myDropdown" class="dropdown-content">
-		<a href="#home">Monday</a>
-		<a href="#about">Tuesday</a>
-		<a href="#home">Wednesday</a>
-		<a href="#contact">Thursday</a>
-		<a href="#home">Friday</a>
-		<a href="#home">Saturday</a>
-		<a href="#home">Sunday</a>    
-  	</div>
-	</div>	 
-		  
+	<!-- ------------------------ Day dropdown------------------> 	
+	<div style='display:none;"' id ='display_dropdowns'>
+	<div id="myDropdown" >
+		<ul class="dropdown2">	
+        	<li><a id='writing_for_dropdown'   >Select a Day</a>
+        		<ul class="sub_menu"  style=" list-style-type: none;">
+        			<li><a href="#home">Monday</a></li>
+					<li><a href="#about">Tuesday</a></li>
+					<li><a href="#home">Wednesday</a></li>
+					<li><a href="#contact">Thursday</a></li>
+					<li><a href="#home">Friday</a></li>
+					<li><a href="#home">Saturday</a></li>
+					<li><a href="#home">Sunday</a></li>    
+        		</ul>
+        	</li>
+        </ul>
+	</div>	  
 	<!-- --------------------Hour dropdown-----------------------> 
 
-	<div class="dropdown"  style="width:10%;float:left;">
-	<button onclick="myFunction2()" class="dropbtn">Select a Time</button>
-  	<div id="myDropdown2" class="dropdown-content">
-		<a href="#home">6am</a>
-		<a href="#about">7am</a>
-		<a href="#home">8am</a>
-		<a href="#home">9am</a>
-		<a href="#home">10am</a>
-		<a href="#home">11am</a>
-		<a href="#home">12 noon</a>    
-		<a href="#home">1pm</a> 
-		<a href="#home">2pm</a> 
-		<a href="#home">3pm</a> 
-		<a href="#home">4pm</a> 
-		<a href="#home">5pm</a> 
-		<a href="#home">6pm</a>
-		<a href="#about">7pm</a>
-		<a href="#home">8pm</a>
-		<a href="#home">9pm</a>
-		<a href="#home">10pm</a>
-		<a href="#home">11pm</a>
-		<a href="#home">12 midnight</a>    
-		<a href="#home">1am</a> 
-		<a href="#home">2am</a> 
-		<a href="#home">3am</a> 
-		<a href="#home">4am</a> 
-		<a href="#home">5am</a> 
-  	</div>
-	</div>	 		  
-		  
-		  
-		  
+	<div id="myDropdown2" >
+        <ul class="dropdown2">
+        	<li><a id='writing_for_dropdown'>Select a Time</a>
+        		<ul class="sub_menu"  style=" list-style-type: none;">
+        			 <li><a href="#home">6am</a></li>
+					<li><a href="#about">7am</a></li>
+					<li><a href="#home">8am</a></li>
+					<li><a href="#home">9am</a></li>
+					<li><a href="#home">10am</a></li>
+					<li><a href="#home">11am</a></li>
+					<li><a href="#home">12 noon</a></li>    
+					<li><a href="#home">1pm</a></li> 
+					<li><a href="#home">2pm</a></li> 
+					<li><a href="#home">3pm</a></li> 
+					<li><a href="#home">4pm</a></li> 
+					<li><a href="#home">5pm</a></li> 
+					<li><a href="#home">6pm</a></li>
+					<li><a href="#about">7pm</a></li>
+					<li><a href="#home">8pm</a></li>
+					<li><a href="#home">9pm</a></li>
+					<li><a href="#home">10pm</a></li>
+					<li><a href="#home">11pm</a></li>
+					<li><a href="#home">12 midnight</a></li>    
+					<li><a href="#home">1am</a></li> 
+					<li><a href="#home">2am</a></li> 
+					<li><a href="#home">3am</a></li> 
+					<li><a href="#home">4am</a></li> 
+					<li><a href="#home">5am</a></li> 
+        		</ul>
+			</li>
+        </ul>
+	</div>	
+		  </div>
 		  
     <div id="graph1"style="width:30%;float:left;">
     </div>
-    <div id="graph2" style="width:50%;float:left;">
+    <div id="graph2" style="width:30%;float:left;">
     </div>
 		  
     </div>
@@ -179,37 +175,116 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" type="text/javascript"></script>
 	<script>
 		
+	// ------------------------hours dropdown ----------------------
+	// https://css-tricks.com/long-dropdowns-solution/
+	var maxHeight = 300;
 
+$(function(){
+
+    $(".dropdown2 > li").hover(function() {
+    
+         var $container = $(this),
+             $list = $container.find("ul"),
+             $anchor = $container.find("a"),
+             height = $list.height() * 1.1,       // make sure there is enough room at the bottom
+             multiplier = height / maxHeight;     // needs to move faster if list is taller
+        
+        // need to save height here so it can revert on mouseout            
+        $container.data("origHeight", $container.height());
+        
+        // so it can retain it's rollover color all the while the dropdown is open
+        $anchor.addClass("hover");
+        
+        // make sure dropdown appears directly below parent list item    
+        $list
+            .show()
+            .css({
+                paddingTop: $container.data("origHeight")
+            });
+        
+        // don't do any animation if list shorter than max
+        if (multiplier > 1) {
+            $container
+                .css({
+                    height: maxHeight,
+                    overflow: "hidden"
+                })
+                .mousemove(function(e) {
+                    var offset = $container.offset();
+                    var relativeY = ((e.pageY - offset.top) * multiplier) - ($container.data("origHeight") * multiplier);
+                    if (relativeY > $container.data("origHeight")) {
+                        $list.css("top", -relativeY + $container.data("origHeight"));
+                    };
+                });
+        }
+        
+    }, function() {
+    
+        var $el = $(this);
+        
+        // put things back to normal
+        $el
+            .height($(this).data("origHeight"))
+            .find("ul")
+            .css({ top: 0 })
+            .hide()
+            .end()
+            .find("a")
+            .removeClass("hover");
+    });
+  
+    
+});
 		
+//-------------------------- Time ---------------------------------
+// https://www.w3schools.com/js/tryit.asp?filename=tryjs_timing_clock	
 		
-		
-// https://www.w3schools.com/howto/howto_js_dropdown.asp
-function myFunction() {
-    document.getElementById("myDropdown").classList.toggle("show");
+function startTime() {
+    var today = new Date();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    var s = today.getSeconds();
+    m = checkTime(m);
+    document.getElementById('txt').innerHTML =
+    h + ":" + m ;
+    var t = setTimeout(startTime, 500);
 }
-
-function myFunction2() {
-    document.getElementById("myDropdown2").classList.toggle("show");
+function checkTime(i) {
+    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+    return i;
 }
 		
+// --------------------------- Display Current weather ---------------
 		
-// Close the dropdown if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
+function getWeather(url) {
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				parsedObj = JSON.parse(this.responseText);
+				parseWeather(parsedObj);
 
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
-    }
-  }
-}	
+			}
+		};
+		xmlhttp.open("GET", url, true);
+		xmlhttp.send();
+	}
 		
+function parseWeather(obj){
+		//var list = obj.list;
+		var icon = obj.weather[0].icon;
+		var temp_in_degrees=  Math.round((obj.main.temp -273.15))*10/10;
 		
+		document.getElementById('icon_info').innerHTML = "<img src='http://openweathermap.org/img/w/" + icon + ".png' alt='Icon depicting current weather.'>";
+		document.getElementById('temp_info').innerHTML = temp_in_degrees + '°C';
+	console.log( temp_in_degrees);
+
+	}
 		
+
+	 getWeather('http://api.openweathermap.org/data/2.5/weather?q=Dublin,ie&APPID=70ef396e3ce3949e0934b4428e41f453');
+
+		
+// -------------------  Map functionality ---------------------------		
 var lastOpenedInfoWindow;
 var parsedObj;
 var stationsLatestData;
@@ -276,16 +351,21 @@ function myMap() {
 			google.maps.event.addListener(cityCircle, 'click', (function(cityCircle, contentString, infowindow) {
 				return function() {
 					document.location.href = "#.loc";
+					var x = document.getElementById("display_dropdowns");
+							if (x.style.display === "none") 
+								x.style.display = "block";
+						
 					$.ajax({
 						url: "http://localhost:5000/available/" + cityCircle.number,
 						success: function(data) {
 							infowindow.setContent('<b>Station Number: ' + data[0].number + '</b><br>' + data[0].address + '<br>Available bikes: ' + data[0].available_bikes + "<br>Available stands: " + data[0].available_bike_stands);
 							infowindow.open(map, cityCircle);
+							
 							closeLastOpenedInfoWindow();
 							lastOpenedInfoWindow = infowindow;
 
 							// if  infowindow.setContent, infowindow.open, closeLastOpenedInfoWindow, lastOpenedInfoWindow  are above google.charts 1st  			
-
+				
 							google.charts.load('current', {
 								'packages': ['corechart', 'bar']
 							});
@@ -294,7 +374,6 @@ function myMap() {
 								'packages': ['corechart']
 							});
 							google.charts.setOnLoadCallback(init);
-
 						}
 					});
 
@@ -309,7 +388,6 @@ function myMap() {
 					function drawInfoWindowChart(cityCircle) {
 
 						var jqxhr = $.getJSON("http://localhost:5000/rain/" + cityCircle.number, function(data) {
-
 
 							var chart_data = new google.visualization.DataTable();
 							chart_data.addColumn('timeofday', 'Time of Day');
@@ -363,9 +441,6 @@ function myMap() {
 
 							chart.draw(chart_data, options);
 						})
-
-
-
 					}
 
 					function drawPieChart(cityCircle) {
@@ -400,7 +475,6 @@ function myMap() {
 	checkNumbers("http://localhost:5000/orlaJSON");
 
 }
-		
 	</script>
 	<script src="https://maps.googleapis.com/maps/api/js?callback=myMap&key=AIzaSyDnhjzNlsrZqK3A_HtAfH0ya2hmN0qQAzs" async defer ></script>
 	
