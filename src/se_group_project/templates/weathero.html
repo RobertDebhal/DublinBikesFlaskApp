@@ -11,28 +11,61 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <!-- credit to fontawesome.io --> 
     <link rel="stylesheet" type="text/css" href="static/Assignment3_css.css">
-</head>
-<body id="body">
-	
-    <div class="wrapper" style="width:80%">
-    <div style="height:80px;overflow:hidden;margin:0">
-    <div style="width:50%;float:left;">
-    <h1 style="margin-top:25px;">Dublin Bikes</h1>
-    </div>
-    <div style="width:50%;float:left;">
-    <img alt="Bike Logo" src="static/bike_logo.jpeg" style="float:right">
-    </div>
-    </div>
-    </div>
+	<style>
 
+/*---------------------------------------------------*/
+#writing_for_dropdown{color: white;
+	font-size: 16px;
+		}
+		
+		
+		
+ul.dropdown2                         { position: relative; width: 100%;color: white; }
+ul.dropdown2 li                      { font-weight: bold; float: left; width: 180px; background: #333333; position: relative; color: white;}
+ul.dropdown2 a:hover		         { color: #333333; }
+ul.dropdown2 li a                    { display: block; padding: 12px 8px; color: #222; position: relative; z-index: 2000; }
+ul.dropdown2 li a:hover,
+ul.dropdown2 li a.hover              { background: #737373; position: relative; }
+
+
+/* 
+	LEVEL TWO
+*/
+ul.dropdown2 ul 					{ display: none; position: absolute; top: 0; left: 0; width: 180px; z-index: 1000; }
+ul.dropdown2 ul li 					{ font-weight: normal; background: #f6f6f6; color: #000; border-bottom: 1px solid #ccc; }
+ul.dropdown2 ul li a				{ display: block; background: #eee !important; } 
+ul.dropdown2 ul li a:hover			{ display: block; background: #ddd !important; } 
+	
+	</style>
+</head>
+<body id="body" onload="startTime()">
+<!--	<div  style="float:right;" id="txt"></div>  --->
+
+	<!-------------------------------------------Above the navbar -------------------------->
+    <div class="wrapper" style="width:95%">
+    <div style="height:80px;overflow:hidden;margin:0">
+    <div style="width:45%;float:left;">
+		<h1 style="margin-top:25px;font-family:'Courier';"><b>Dublin Bikes</b></h1>
+    </div>
+    <div style="width:50%;float:left;">
+    <a href=http://www.dublinbikes.ie/ target="_blank"><img alt="Bike Logo" src="static/bike_logo.jpeg" style="float:right" class = "logo_image"></a>
+    </div>
+    </div>
+    </div>
+	<!------------------------------------------- Navbar ----------------------------------->
     <nav>
         <div style="margin-bottom:0px;">
         <ul class="grad2">
-    <li style="margin-left: 10%" class="active"><a href="Index.php">Enter Your Location</a></li>
-    <li style="float:right;margin-right:12.5%;"><a href=# class="icon" style="min-height:63px;"><i class="fa fa-instagram fa-fw" style="font-size:35px;"></i></a></li> 
-    <li style="float:right;"><a href=# class="icon" style="min-height:63px;"><i class="fa fa-facebook fa-fw" style="font-size:35px"></i></a></li>
-    <li style="float:right;"><a href=# class="icon" style="min-height:63px;"><i class="fa fa-twitter fa-fw" style="font-size:35px"></i></a></li> 
-        </ul>
+    <li style="float:right;margin-right:4%"><a href='#' class="icon" style="font-size:30px;color:white;"  id='txt'></a></li> 
+<li style="float:right;margin-right:2%"><a href='#' class="icon"  style="font-size:30px;color:white;"  id='icon_info'></a></li>  
+			
+	<li style="float:right;margin-right:2%"><a href='#' class="icon"  style="font-size:30px;color:white;"  id='temp_info'></a></li>  
+			
+    <li style="float:right;margin-right:2.5%;"><a href=https://www.instagram.com/explore/tags/dublinbikes/ target="_blank" class="icon" style="min-height:63px;"><i class="fa fa-instagram fa-fw" style="font-size:35px;"></i></a></li> 
+    <li style="float:right;"><a href=https://www.facebook.com/dublinbikes/  target="_blank" class="icon" style="min-height:63px;"><i class="fa fa-facebook fa-fw" style="font-size:35px"></i></a></li>
+    <li style="float:right;"><a href=https://twitter.com/dublinbikes2go target="_blank" class="icon" style="min-height:63px;"><i class="fa fa-twitter fa-fw" style="font-size:35px"></i></a></li> 
+			
+			</ul>
     </div>
     </nav>
     <!--<br> <br><br>-->
@@ -42,222 +75,80 @@
     <div style="width:50%;float:left;min-height:25px;">
     </div>
     </div>
+	<!-------------------------------------------Map ------------------------------------->
 	<div id="map" style="width:100%;height:400px"></div>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-	<!--http://biostall.com/loading-infowindow-content-using-ajax-with-google-maps-api/-->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" type="text/javascript"></script>
-	<script>
-		var lastOpenedInfoWindow;
-		var parsedObj;
-		var stationsLatestData;
-		
-		function myMap() {
- // https://www.w3schools.com/js/js_json_http.asp
-             function checkNumbers(url) {
-	var xmlhttp = new XMLHttpRequest();
-	xmlhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			parsedObj = JSON.parse(this.responseText);
-            myFunction(parsedObj);
-			
-		}
-	};
-	xmlhttp.open("GET", url, true);
-	xmlhttp.send();
-             }
-			
-        function myFunction(arr) {
-			var mapOptions = {
-				center: new google.maps.LatLng(53.350140, -6.266155),
-				zoom: 14,
-				mapTypeId: google.maps.MapTypeId.ROADMAP
-			}
-		var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-        var i;
-         for(i = 0; i < arr.length; i++){
-            var radiusOut;
-			var colorOut;
-            var ratio = arr[i].available_bikes/arr[i].bike_stands;
-            if (ratio<0.001){
-                colorOut='#FF0000';
-			    radiusOut=40;
-            } 
-			else if (ratio<.6&&ratio>0.001){
-			    colorOut='#0000FF';
-			    radiusOut=60;
-			}
-			else{
-			    colorOut='#0000FF';
-			    radiusOut=100*ratio;
-			}
-            var cityCircle = new google.maps.Circle({
-                strokeColor: colorOut,
-                strokeOpacity: 0.8,
-                strokeWeight: 0.5,
-                fillColor: colorOut,
-                fillOpacity: 0.35,
-                map: map,
-                center:{lat:arr[i].lat,lng:arr[i].lng},
-                position: {lat:arr[i].lat,lng:arr[i].lng},
-                radius: radiusOut,
-				number: arr[i].number
-            });
-            var contentString;
-            
-            var infowindow = new google.maps.InfoWindow();
-            var num = cityCircle.number;
-           google.maps.event.addListener(cityCircle,'click',(function( cityCircle,contentString,infowindow) {
-               return function(){ 
-				     document.location.href="#.loc";
-				   $.ajax({  
-                url: "http://localhost:5000/available/"+cityCircle.number,  
-                success: function(data) { 
-                        infowindow.setContent('<b>Station Number: '+data[0].number +'</b><br>'+ data[0].address+'<br>Available bikes: '+data[0].available_bikes+"<br>Available stands: "+data[0].available_bike_stands);  
-						infowindow.open(map, cityCircle);
-						closeLastOpenedInfoWindow();
-						lastOpenedInfoWindow = infowindow; 
-					
-						// if  infowindow.setContent, infowindow.open, closeLastOpenedInfoWindow, lastOpenedInfoWindow  are above google.charts 1st  			
-					
-                        google.charts.load('current', {'packages': ['corechart','bar']});
-                        google.charts.setOnLoadCallback(init_iwc);
-						google.charts.load('current', {'packages':['corechart']});
-                    	google.charts.setOnLoadCallback(init);
-						
-                }  
-            });     
-				   function init(){
-				       drawPieChart(cityCircle);
-				   }
-				   function init_iwc(){
-				       drawInfoWindowChart(cityCircle);
-				   }
-				   
-				   function drawInfoWindowChart(cityCircle) {
-					   
-				    var jqxhr = $.getJSON("http://localhost:5000/rain/" +cityCircle.number,      function (data) {		
-				 
-				 
-				 var chart_data = new google.visualization.DataTable();
-				 chart_data.addColumn('timeofday', 'Time of Day');
-				 chart_data.addColumn('number', 'available_bikes')
-				 chart_data.addColumn('number', 'available_bike_stands');
-				var i;
-				var listRaining=[];
-				var listNotRaining=[];
-				var j;
-				for (j=0;j<24;j++){
-					listRaining[j]=0;
-					listNotRaining[j]=0;
-				}
-				for (i = 0;i<data.length;i++){
-				    if(data[i].rain_status=="Raining"){
-						listRaining[data[i].hours]=data[i].average_available_rain;
-					}
-					else{
-						listNotRaining[data[i].hours]=data[i].average_available_no_rain;
-					}
-				}		
-				console.log(listRaining);
-				chart_data.addRows([[{v: [0, 0, 0], f: '9 am'},listRaining[0],listNotRaining[0]],
-									[{v: [1, 0, 0], f: '9 am'},listRaining[1],listNotRaining[1]],
-									[{v: [2, 0, 0], f: '9 am'},listRaining[2],listNotRaining[2]],
-									[{v: [3, 0, 0], f: '9 am'},listRaining[3],listNotRaining[3]],
-									[{v: [4, 0, 0], f: '9 am'},listRaining[4],listNotRaining[4]],
-									[{v: [5, 0, 0], f: '9 am'},listRaining[5],listNotRaining[5]],
-									[{v: [6, 0, 0], f: '9 am'},listRaining[6],listNotRaining[6]],
-									[{v: [7, 0, 0], f: '9 am'},listRaining[7],listNotRaining[7]],
-									[{v: [8, 0, 0], f: '9 am'},listRaining[8],listNotRaining[8]],
-									[{v: [9, 0, 0], f: '9 am'},listRaining[9],listNotRaining[9]],
-									[{v: [10, 0, 0], f: '9 am'},listRaining[10],listNotRaining[10]],
-									[{v: [11, 0, 0], f: '9 am'},listRaining[11],listNotRaining[11]],
-									[{v: [12, 0, 0], f: '9 am'},listRaining[12],listNotRaining[12]],
-									[{v: [13, 0, 0], f: '9 am'},listRaining[13],listNotRaining[13]],
-									[{v: [14, 0, 0], f: '9 am'},listRaining[14],listNotRaining[14]],
-									[{v: [15, 0, 0], f: '9 am'},listRaining[15],listNotRaining[15]],
-									[{v: [16, 0, 0], f: ' 11 am'},listRaining[16],listNotRaining[16]],
-								   [{v: [17, 0, 0], f: ' 1 pm'},listRaining[17],listNotRaining[17]],
-								   [{v: [18, 0, 0], f: '3 pm'},listRaining[18],listNotRaining[18]],
-								   [{v: [19, 0, 0], f: '3 pm'},listRaining[19],listNotRaining[19]],
-								   [{v: [20, 0, 0], f: '3 pm'},listRaining[20],listNotRaining[20]],
-								   [{v: [21, 0, 0], f: '3 pm'},listRaining[21],listNotRaining[21]],
-								   [{v: [22, 0, 0], f: '3 pm'},listRaining[22],listNotRaining[22]],
-								   [{v: [23, 0, 0], f: '5 pm'},listRaining[23],listNotRaining[23]]]);		
-						
-						
-						
-						
-				var options = {
-					 title: 'Availability',
-					 colors: ['#9575cd',
-					'#33ac71'],
-					 hAxis: {
-					 title: 'Time of Day',
-					 viewWindow: {
-            min: [7, 30, 0],
-            max: [17, 30, 0]
-          }
-					 },
-					 vAxis: { title: '#'
-					 }
- };
-var chart = new google.visualization.ColumnChart(
-        					document.getElementById('graph2'));
+	<!-------------------------------------------Charts------------------------------------->
+	  <div class="wrapper" style="width:95%">
+		  
+    <div style="width:10%;float:left;min-height:25px;">  
+	</div>
+	<div  style="width:10%;float:left;min-height:25px;">
+    </div>
+    <div  style="width:30%;float:left;min-height:25px;">
+    </div>
+	<div  style="width:50%;float:left;min-height:25px;">
+    </div>
+		  
+	<!-- ------------------------ Day dropdown------------------> 	
+	<div style='display:none;"' id ='display_dropdowns'>
+	<div id="myDropdown" >
+		<ul class="dropdown2">	
+        	<li><a id='writing_for_dropdown'   >Select a Day</a>
+        		<ul class="sub_menu"  style=" list-style-type: none;">
+        			<li><a href="#home">Monday</a></li>
+					<li><a href="#about">Tuesday</a></li>
+					<li><a href="#home">Wednesday</a></li>
+					<li><a href="#contact">Thursday</a></li>
+					<li><a href="#home">Friday</a></li>
+					<li><a href="#home">Saturday</a></li>
+					<li><a href="#home">Sunday</a></li>    
+        		</ul>
+        	</li>
+        </ul>
+	</div>	  
+	<!-- --------------------Hour dropdown-----------------------> 
 
-      					chart.draw(chart_data, options);
-         })	
-					  
-					   
-			
-         }
-				  		
-                 	 function drawPieChart(cityCircle) {
-			 var jqxhr = $.getJSON("http://localhost:5000/available/" +cityCircle.number,      function (data) {		
-				 
-				 
-				 var chart_data = google.visualization.arrayToDataTable([
-          ['Status', 'Number of bikes'],
-			 ['Available bikes',  data[0].available_bikes  ],
-			['Available bike stands',data[0].available_bike_stands  ]
-        ]);
-				 		
-				var options = {
-					 title: 'Bike availability'
- };
-		  var chart = new google.visualization.PieChart(document.getElementById('graph1'));
-
-      					chart.draw(chart_data, options);
-         })		
-			 }  
-               }
-        })(cityCircle,contentString,infowindow)); 
-        }
-    
-         
-        function closeLastOpenedInfoWindow(){
-			if (lastOpenedInfoWindow) {
-        lastOpenedInfoWindow.close();
-    }
-}
-        }
-                checkNumbers("http://localhost:5000/orlaJSON");		
-		
-	}		
-		
-	</script>
-	<script src="https://maps.googleapis.com/maps/api/js?callback=myMap&key=AIzaSyDnhjzNlsrZqK3A_HtAfH0ya2hmN0qQAzs" async defer ></script>
-	
-    <div class="wrapper" style="width:80%">
-    <div style="width:50%;float:left;min-height:25px;">
+	<div id="myDropdown2" >
+        <ul class="dropdown2">
+        	<li><a id='writing_for_dropdown'>Select a Time</a>
+        		<ul class="sub_menu"  style=" list-style-type: none;">
+        			 <li><a href="#home">6am</a></li>
+					<li><a href="#about">7am</a></li>
+					<li><a href="#home">8am</a></li>
+					<li><a href="#home">9am</a></li>
+					<li><a href="#home">10am</a></li>
+					<li><a href="#home">11am</a></li>
+					<li><a href="#home">12 noon</a></li>    
+					<li><a href="#home">1pm</a></li> 
+					<li><a href="#home">2pm</a></li> 
+					<li><a href="#home">3pm</a></li> 
+					<li><a href="#home">4pm</a></li> 
+					<li><a href="#home">5pm</a></li> 
+					<li><a href="#home">6pm</a></li>
+					<li><a href="#about">7pm</a></li>
+					<li><a href="#home">8pm</a></li>
+					<li><a href="#home">9pm</a></li>
+					<li><a href="#home">10pm</a></li>
+					<li><a href="#home">11pm</a></li>
+					<li><a href="#home">12 midnight</a></li>    
+					<li><a href="#home">1am</a></li> 
+					<li><a href="#home">2am</a></li> 
+					<li><a href="#home">3am</a></li> 
+					<li><a href="#home">4am</a></li> 
+					<li><a href="#home">5am</a></li> 
+        		</ul>
+			</li>
+        </ul>
+	</div>	
+		  </div>
+		  
+    <div id="graph1"style="width:30%;float:left;">
     </div>
-    <div  style="width:50%;float:left;min-height:25px;">
+    <div id="graph2" style="width:30%;float:left;">
     </div>
-    <div id="graph1"style="width:50%;float:left;">
+		  
     </div>
-    <div id="graph2" style="width:50%;float:left;">
-    </div>
-    </div>
-    
+    <!-- -----------------------------------form and footer ------------------------------->
     <div class="grad2 footertop">
             
             <form style="margin-right:5%">
@@ -278,4 +169,314 @@ var chart = new google.visualization.ColumnChart(
 </div>
     
     </body>
+	
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<!--http://biostall.com/loading-infowindow-content-using-ajax-with-google-maps-api/-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" type="text/javascript"></script>
+	<script>
+		
+	// ------------------------hours dropdown ----------------------
+	// https://css-tricks.com/long-dropdowns-solution/
+	var maxHeight = 300;
+
+$(function(){
+
+    $(".dropdown2 > li").hover(function() {
+    
+         var $container = $(this),
+             $list = $container.find("ul"),
+             $anchor = $container.find("a"),
+             height = $list.height() * 1.1,       // make sure there is enough room at the bottom
+             multiplier = height / maxHeight;     // needs to move faster if list is taller
+        
+        // need to save height here so it can revert on mouseout            
+        $container.data("origHeight", $container.height());
+        
+        // so it can retain it's rollover color all the while the dropdown is open
+        $anchor.addClass("hover");
+        
+        // make sure dropdown appears directly below parent list item    
+        $list
+            .show()
+            .css({
+                paddingTop: $container.data("origHeight")
+            });
+        
+        // don't do any animation if list shorter than max
+        if (multiplier > 1) {
+            $container
+                .css({
+                    height: maxHeight,
+                    overflow: "hidden"
+                })
+                .mousemove(function(e) {
+                    var offset = $container.offset();
+                    var relativeY = ((e.pageY - offset.top) * multiplier) - ($container.data("origHeight") * multiplier);
+                    if (relativeY > $container.data("origHeight")) {
+                        $list.css("top", -relativeY + $container.data("origHeight"));
+                    };
+                });
+        }
+        
+    }, function() {
+    
+        var $el = $(this);
+        
+        // put things back to normal
+        $el
+            .height($(this).data("origHeight"))
+            .find("ul")
+            .css({ top: 0 })
+            .hide()
+            .end()
+            .find("a")
+            .removeClass("hover");
+    });
+  
+    
+});
+		
+//-------------------------- Time ---------------------------------
+// https://www.w3schools.com/js/tryit.asp?filename=tryjs_timing_clock	
+		
+function startTime() {
+    var today = new Date();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    var s = today.getSeconds();
+    m = checkTime(m);
+    document.getElementById('txt').innerHTML =
+    h + ":" + m ;
+    var t = setTimeout(startTime, 500);
+}
+function checkTime(i) {
+    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+    return i;
+}
+		
+// --------------------------- Display Current weather ---------------
+		
+function getWeather(url) {
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				parsedObj = JSON.parse(this.responseText);
+				parseWeather(parsedObj);
+
+			}
+		};
+		xmlhttp.open("GET", url, true);
+		xmlhttp.send();
+	}
+		
+function parseWeather(obj){
+		//var list = obj.list;
+		var icon = obj.weather[0].icon;
+		var temp_in_degrees=  Math.round((obj.main.temp -273.15))*10/10;
+		
+		document.getElementById('icon_info').innerHTML = "<img src='http://openweathermap.org/img/w/" + icon + ".png' alt='Icon depicting current weather.'>";
+		document.getElementById('temp_info').innerHTML = temp_in_degrees + '°C';
+	console.log( temp_in_degrees);
+
+	}
+		
+
+	 getWeather('http://api.openweathermap.org/data/2.5/weather?q=Dublin,ie&APPID=70ef396e3ce3949e0934b4428e41f453');
+
+		
+// -------------------  Map functionality ---------------------------		
+var lastOpenedInfoWindow;
+var parsedObj;
+var stationsLatestData;
+
+function myMap() {
+	// https://www.w3schools.com/js/js_json_http.asp
+	function checkNumbers(url) {
+		var xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				parsedObj = JSON.parse(this.responseText);
+				myFunction(parsedObj);
+
+			}
+		};
+		xmlhttp.open("GET", url, true);
+		xmlhttp.send();
+	}
+
+	function myFunction(arr) {
+		var mapOptions = {
+			center: new google.maps.LatLng(53.350140, -6.266155),
+			zoom: 14,
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		}
+		var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+		var i;
+		for (i = 0; i < arr.length; i++) {
+			var radiusOut;
+			var colorOut;
+			var ratio = arr[i].available_bikes / arr[i].bike_stands;
+			if (ratio < 0.001) {
+				colorOut = '#FF0000';
+				radiusOut = 40;
+			} else if (ratio < .6 && ratio > 0.001) {
+				colorOut = '#0000FF';
+				radiusOut = 60;
+			} else {
+				colorOut = '#0000FF';
+				radiusOut = 100 * ratio;
+			}
+			var cityCircle = new google.maps.Circle({
+				strokeColor: colorOut,
+				strokeOpacity: 0.8,
+				strokeWeight: 0.5,
+				fillColor: colorOut,
+				fillOpacity: 0.35,
+				map: map,
+				center: {
+					lat: arr[i].lat,
+					lng: arr[i].lng
+				},
+				position: {
+					lat: arr[i].lat,
+					lng: arr[i].lng
+				},
+				radius: radiusOut,
+				number: arr[i].number
+			});
+			var contentString;
+
+			var infowindow = new google.maps.InfoWindow();
+			var num = cityCircle.number;
+			google.maps.event.addListener(cityCircle, 'click', (function(cityCircle, contentString, infowindow) {
+				return function() {
+					document.location.href = "#.loc";
+					var x = document.getElementById("display_dropdowns");
+							if (x.style.display === "none") 
+								x.style.display = "block";
+						
+					$.ajax({
+						url: "http://localhost:5000/available/" + cityCircle.number,
+						success: function(data) {
+							infowindow.setContent('<b>Station Number: ' + data[0].number + '</b><br>' + data[0].address + '<br>Available bikes: ' + data[0].available_bikes + "<br>Available stands: " + data[0].available_bike_stands);
+							infowindow.open(map, cityCircle);
+							
+							closeLastOpenedInfoWindow();
+							lastOpenedInfoWindow = infowindow;
+
+							// if  infowindow.setContent, infowindow.open, closeLastOpenedInfoWindow, lastOpenedInfoWindow  are above google.charts 1st  			
+				
+							google.charts.load('current', {
+								'packages': ['corechart', 'bar']
+							});
+							google.charts.setOnLoadCallback(init_iwc);
+							google.charts.load('current', {
+								'packages': ['corechart']
+							});
+							google.charts.setOnLoadCallback(init);
+						}
+					});
+
+					function init() {
+						drawPieChart(cityCircle);
+					}
+
+					function init_iwc() {
+						drawInfoWindowChart(cityCircle);
+					}
+
+					function drawInfoWindowChart(cityCircle) {
+
+						var jqxhr = $.getJSON("http://localhost:5000/rain/" + cityCircle.number, function(data) {
+
+							var chart_data = new google.visualization.DataTable();
+							chart_data.addColumn('timeofday', 'Time of Day');
+							chart_data.addColumn('number', 'available_bikes')
+							chart_data.addColumn('number', 'available_bike_stands');
+							var i;
+							var listRaining = [];
+							var listNotRaining = [];
+							var j;
+							for (j = 0; j < 24; j++) {
+								listRaining[j] = 0;
+								listNotRaining[j] = 0;
+							}
+							for (i = 0; i < data.length; i++) {
+								if (data[i].rain_status == "Raining") {
+									listRaining[data[i].hours] = data[i].average_available_rain;
+								} else {
+									listNotRaining[data[i].hours] = data[i].average_available_no_rain;
+								}
+							}
+							console.log(listRaining);
+
+							var k;
+							for (k = 0; k < 24; k++) {
+								chart_data.addRows([
+									[{
+										v: [k, 0, 0],
+										f: 'k am'
+									}, listRaining[k], listNotRaining[k]]
+								]);
+							}
+
+							var options = {
+								title: 'Availability',
+								colors: ['#9575cd',
+									'#33ac71'
+								],
+								hAxis: {
+									title: 'Time of Day',
+									viewWindow: {
+										min: [3, 30, 0],
+										max: [23, 30, 0]
+									}
+								},
+								vAxis: {
+									title: '#'
+								}
+							};
+							var chart = new google.visualization.ColumnChart(
+								document.getElementById('graph2'));
+
+							chart.draw(chart_data, options);
+						})
+					}
+
+					function drawPieChart(cityCircle) {
+						var jqxhr = $.getJSON("http://localhost:5000/available/" + cityCircle.number, function(data) {
+
+
+							var chart_data = google.visualization.arrayToDataTable([
+								['Status', 'Number of bikes'],
+								['Available bikes', data[0].available_bikes],
+								['Available bike stands', data[0].available_bike_stands]
+							]);
+
+							var options = {
+								title: 'Bike availability'
+							};
+							var chart = new google.visualization.PieChart(document.getElementById('graph1'));
+
+							chart.draw(chart_data, options);
+						})
+					}
+				}
+			})(cityCircle, contentString, infowindow));
+		}
+
+
+		function closeLastOpenedInfoWindow() {
+			if (lastOpenedInfoWindow) {
+				lastOpenedInfoWindow.close();
+			}
+		}
+	}
+	checkNumbers("http://localhost:5000/orlaJSON");
+
+}
+	</script>
+	<script src="https://maps.googleapis.com/maps/api/js?callback=myMap&key=AIzaSyDnhjzNlsrZqK3A_HtAfH0ya2hmN0qQAzs" async defer ></script>
+	
+  
 </html>
