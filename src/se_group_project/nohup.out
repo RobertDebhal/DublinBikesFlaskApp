@@ -5,4 +5,4 @@ Traceback (most recent call last):
     main()
   File "API_scraper.py", line 70, in main
     dublin_stations_test[i]['latest_weather']=check['dt']
-TypeError: 'NoneType' object is not subscriptable
+
