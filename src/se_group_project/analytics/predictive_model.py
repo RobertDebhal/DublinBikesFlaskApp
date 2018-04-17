@@ -24,9 +24,15 @@ df['date_time'].head()
 df['hours']= df['date_time'].dt.hour
 df['day']=df['date_time'].dt.dayofweek
 
-df['rain']=0
-df.loc[df['description'] == "moderate rain", 'rain'] = 1
-df[df['rain']==0]
+
+
+df['rain']='False'
+df.loc[df['description'] == "moderate rain", 'rain'] = 'True'
+check = df[df['rain']=='False']
+df = pd.get_dummies(df) # creates 2 columns rain_False and rain_True with 0s and 1s where appropriate 
+
+
+
 
 #https://stackoverflow.com/questions/19790790/splitting-dataframe-into-multiple-dataframes
 
@@ -58,7 +64,7 @@ for key in DataFrameDictHourDayStation.keys():
             pickle.dump(model, output, pickle.HIGHEST_PROTOCOL)
             continue
     linear = LinearRegression()
-    model=linear.fit(DataFrameDictHourDayStation[key][['wind','temperature','rain']],DataFrameDictHourDayStation[key]['available_bikes'])
+    model=linear.fit(DataFrameDictHourDayStation[key][['wind','temperature','rain_True','rain_False']],DataFrameDictHourDayStation[key]['available_bikes'])
     mkdir(key)
     with open("./"+str(key)+"/model.pkl",'wb') as output:
         pickle.dump(model, output, pickle.HIGHEST_PROTOCOL)
