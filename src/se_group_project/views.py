@@ -2,6 +2,9 @@ from flask import render_template,jsonify, g, json, Flask
 from se_group_project import app
 import sqlalchemy
 import sqlite3
+import pickle
+import requests
+import pandas as pd
 
 #app.config.from_object('config')
 
@@ -83,6 +86,22 @@ def get_rain(station_id):
 	for row in rows2:
 		data.append(dict(row))
 	return jsonify(data) 
+
+@app.route("/<int:station_id>/<int:day>/<int:hour>")
+def predict(station_id,day,hour):
+    response = requests.get('http://api.openweathermap.org/data/2.5/forecast?q=Dublin,ie&APPID=70ef396e3ce3949e0934b4428e41f453')
+    if response.status_code == 200:
+        temp = json.loads(response.content.decode('utf-8'))
+        obj = temp['city']
+        #for i in range(len(temp['list'])):
+        #    time=temp['list'][i]['dt_txt']
+        #    break
+        return jsonify(temp)
+    else:
+        return 'There was an error in loading your page :('
+	#with open("./analytics/"+str(station_id)+'/'+str(day)+'/'+str(hour)+"/model.pkl","rb") as f:
+	#	data = pickle.load(f) 
+	#return str(data.coef_)
 	
 
 
