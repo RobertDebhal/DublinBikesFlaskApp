@@ -54,7 +54,7 @@ def main():
     #if doesn't exist make table
     
     engine = sqlalchemy.create_engine('mysql+pymysql://teamforsoft:whocares1@teamforsoft.ci76dskzcb0m.us-west-2.rds.amazonaws.com:3306/SE_group_project')
-    conn = engine.connect()#creating local sqlite connection/database for quicker response to marker click queries
+    conn = engine.connect() #creating local sqlite connection/database for quicker response to marker click queries
     enginesqlite = sqlite3.connect('most_recent_station_data.db')
 
     while True:
