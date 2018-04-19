@@ -2,4 +2,6 @@
 Contributors
 ============
 
-* Orla Gartland <orla.gartland@ucdconnect.ie>
+Orla Gartland 
+Robert deBhal
+Fatima Mohammed

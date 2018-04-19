@@ -5,6 +5,7 @@ import sqlite3
 import pickle
 import requests
 import pandas as pd
+import datetime
 
 #app.config.from_object('config')
 
@@ -89,30 +90,16 @@ def get_rain(station_id):
 
 @app.route("/<int:station_id>/<int:day>/<int:hour>")
 def predict(station_id,day,hour):
-    response = requests.get('http://api.openweathermap.org/data/2.5/forecast?q=Dublin,ie&APPID=70ef396e3ce3949e0934b4428e41f453')
-    if response.status_code == 200:
-        temp = json.loads(response.content.decode('utf-8'))
-        obj = temp['city']
-        #for i in range(len(temp['list'])):
-        #    time=temp['list'][i]['dt_txt']
-        #    break
-        return jsonify(temp)
-    else:
-        return 'There was an error in loading your page :('
-	#with open("./analytics/"+str(station_id)+'/'+str(day)+'/'+str(hour)+"/model.pkl","rb") as f:
-	#	data = pickle.load(f) 
-	#return str(data.coef_)
-	
-
-
-
-
-
-
-
-
-
-
+    engine = connect_to_database()
+    conn = engine.connect() 
+    rows=conn.execute('SELECT last_update, AVG(available_bikes) FROM dynamic WHERE number ={};'.format(station_id))
+    data = []
+    for row in rows:
+        #dt = datetime.datetime(last_update)
+        data.append(dict(row))
+        #data.append(dt)
+    return jsonify(data)
+  
 
 
 
