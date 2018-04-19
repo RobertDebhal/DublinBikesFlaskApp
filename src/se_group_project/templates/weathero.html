@@ -14,7 +14,11 @@
 	<style>
 
 /*---------------------------------------------------*/
-#writing_for_dropdown{color: white;
+#writing_for_dropdown_hour{color: white;
+	font-size: 16px;
+		}
+		
+#writing_for_dropdown_day{color: white;
 	font-size: 16px;
 		}
 		
@@ -90,52 +94,54 @@ ul.dropdown2 ul li a:hover			{ display: block; background: #ddd !important; }
     </div>
 		  
 	<!-- ------------------------ Day dropdown------------------> 	
+	<div id = "station"></div>
+	
 	<div style='display:none;"' id ='display_dropdowns'>
+	<div style="margin-left:11%">Predict Bike Availabilty!</div>
 	<div id="myDropdown" >
 		<ul class="dropdown2">	
-        	<li><a id='writing_for_dropdown'   >Select a Day</a>
+        	<li><a id='writing_for_dropdown_day'>Select a Day</a>
         		<ul class="sub_menu"  style=" list-style-type: none;">
-        			<li><a href="#home">Monday</a></li>
-					<li><a href="#about">Tuesday</a></li>
-					<li><a href="#home">Wednesday</a></li>
-					<li><a href="#contact">Thursday</a></li>
-					<li><a href="#home">Friday</a></li>
-					<li><a href="#home">Saturday</a></li>
-					<li><a href="#home">Sunday</a></li>    
+        			<li><a onclick="dayFunc('Monday')">Monday</a></li>
+					<li><a onclick="dayFunc('Tuesday')">Tuesday</a></li>
+					<li><a onclick="dayFunc('Wednesday')">Wednesday</a></li>
+					<li><a onclick="dayFunc('Thursday')">Thursday</a></li>
+					<li><a onclick="dayFunc('Friday')">Friday</a></li>
+					<li><a onclick="dayFunc('Saturday')">Saturday</a></li>
+					<li><a onclick="dayFunc('Sunday')">Sunday</a></li>    
         		</ul>
         	</li>
         </ul>
 	</div>	  
 	<!-- --------------------Hour dropdown-----------------------> 
-
 	<div id="myDropdown2" >
         <ul class="dropdown2">
-        	<li><a id='writing_for_dropdown'>Select a Time</a>
+        	<li><a id='writing_for_dropdown_hour'>Select a Time</a>
         		<ul class="sub_menu"  style=" list-style-type: none;">
-        			 <li><a href="#home">6am</a></li>
-					<li><a href="#about">7am</a></li>
-					<li><a href="#home">8am</a></li>
-					<li><a href="#home">9am</a></li>
-					<li><a href="#home">10am</a></li>
-					<li><a href="#home">11am</a></li>
-					<li><a href="#home">12 noon</a></li>    
-					<li><a href="#home">1pm</a></li> 
-					<li><a href="#home">2pm</a></li> 
-					<li><a href="#home">3pm</a></li> 
-					<li><a href="#home">4pm</a></li> 
-					<li><a href="#home">5pm</a></li> 
-					<li><a href="#home">6pm</a></li>
-					<li><a href="#about">7pm</a></li>
-					<li><a href="#home">8pm</a></li>
-					<li><a href="#home">9pm</a></li>
-					<li><a href="#home">10pm</a></li>
-					<li><a href="#home">11pm</a></li>
-					<li><a href="#home">12 midnight</a></li>    
-					<li><a href="#home">1am</a></li> 
-					<li><a href="#home">2am</a></li> 
-					<li><a href="#home">3am</a></li> 
-					<li><a href="#home">4am</a></li> 
-					<li><a href="#home">5am</a></li> 
+        			 <li><a onclick="hourFunc(6)">6am</a></li>
+					<li><a onclick="hourFunc(7)">7am</a></li>
+					<li><a onclick="hourFunc(8)">8am</a></li>
+					<li><a onclick="hourFunc(9)">9am</a></li>
+					<li><a onclick="hourFunc(10)">10am</a></li>
+					<li><a onclick="hourFunc(11)">11am</a></li>
+					<li><a onclick="hourFunc(12)">12 noon</a></li>    
+					<li><a onclick="hourFunc(13)">1pm</a></li> 
+					<li><a onclick="hourFunc(14)">2pm</a></li> 
+					<li><a onclick="hourFunc(15)">3pm</a></li> 
+					<li><a onclick="hourFunc(16)">4pm</a></li> 
+					<li><a onclick="hourFunc(17)">5pm</a></li> 
+					<li><a onclick="hourFunc(18)">6pm</a></li>
+					<li><a onclick="hourFunc(19)">7pm</a></li>
+					<li><a onclick="hourFunc(20)">8pm</a></li>
+					<li><a onclick="hourFunc(21)">9pm</a></li>
+					<li><a onclick="hourFunc(22)">10pm</a></li>
+					<li><a onclick="hourFunc(23)">11pm</a></li>
+					<li><a onclick="hourFunc(0)">12 midnight</a></li>    
+					<li><a onclick="hourFunc(1)">1am</a></li> 
+					<li><a onclick="hourFunc(2)">2am</a></li> 
+					<li><a onclick="hourFunc(3)">3am</a></li> 
+					<li><a onclick="hourFunc(4)">4am</a></li> 
+					<li><a onclick="hourFunc(5)">5am</a></li> 
         		</ul>
 			</li>
         </ul>
@@ -149,14 +155,19 @@ ul.dropdown2 ul li a:hover			{ display: block; background: #ddd !important; }
 		  
     </div>
     <!-- -----------------------------------form and footer ------------------------------->
-  
-    
-    <div class="footer grad2" style="padding:10px 0px 20px 0px;min-height:130px;">
+  <div class="grad2 footertop">
+            
 
+  </div>
+    
+    <div class="footer grad2" style="position:relative;padding:10px 0px 20px 0px;min-height:130px;">
+	<div id="goto" style="position:absolute;top:0;height:10px"></div>
     <ul style="list-style-type:none;padding:0;font-weight:none;">    
         <li><h5 style="font-family:sans-serif;">Copyright Dublin Bikes ©</h5></li>
     </ul>
-</div>
+  </div>
+	
+	
     
     </body>
 	
@@ -167,6 +178,22 @@ ul.dropdown2 ul li a:hover			{ display: block; background: #ddd !important; }
 		
 	// ------------------------hours dropdown ----------------------
 	// https://css-tricks.com/long-dropdowns-solution/
+        
+    var station = 1;
+	var day = "please pick a day";
+	var hour = "please pick an hour";
+	
+    function dayFunc(String){
+        day = String;
+		document.getElementById("writing_for_dropdown_day").innerHTML=day;
+    }
+	function hourFunc(Digit){
+        hour = Digit;
+		
+		document.getElementById("writing_for_dropdown_hour").innerHTML=hour;
+    } 
+        
+    
 	var maxHeight = 300;
 
 $(function(){
@@ -340,7 +367,7 @@ function myMap() {
 			var num = cityCircle.number;
 			google.maps.event.addListener(cityCircle, 'click', (function(cityCircle, contentString, infowindow) {
 				return function() {
-					document.location.href = "#.loc";
+					
 					var x = document.getElementById("display_dropdowns");
 							if (x.style.display === "none") 
 								x.style.display = "block";
@@ -348,6 +375,7 @@ function myMap() {
 					$.ajax({
 						url: "http://localhost:5000/available/" + cityCircle.number,
 						success: function(data) {
+							station=cityCircle.number;
 							infowindow.setContent('<b>Station Number: ' + data[0].number + '</b><br>' + data[0].address + '<br>Available bikes: ' + data[0].available_bikes + "<br>Available stands: " + data[0].available_bike_stands);
 							infowindow.open(map, cityCircle);
 							
@@ -430,6 +458,7 @@ function myMap() {
 								document.getElementById('graph2'));
 
 							chart.draw(chart_data, options);
+							document.location.href = "#goto";
 						})
 					}
 
