@@ -31,7 +31,7 @@ df.loc[df['description'] == "moderate rain", 'rain'] = 'True'
 check = df[df['rain']=='False']
 df = pd.get_dummies(df) # creates 2 columns rain_False and rain_True with 0s and 1s where appropriate 
 
-
+print("Got past first part making dictionary now...")
 
 
 #https://stackoverflow.com/questions/19790790/splitting-dataframe-into-multiple-dataframes
@@ -42,13 +42,20 @@ UniqueNumbers = df.number.unique()
 #create a data frame dictionary to store your data frames
 DataFrameDictHourDayStation = {}
 
-for key in UniqueNumbers:
-    for i in range(7):
-        for j in range (24):
-            DataFrameDictHourDayStation[str(key)+'/'+str(i)+'/'+str(j)] = df[:][(df.number == key)&(df.hours==j)&(df.day==i)]
+#count=0
+#for key in UniqueNumbers:
+#    for i in range(7):
+#        for j in range (24):
+#            DataFrameDictHourDayStation[str(key)+'/'+str(i)+'/'+str(j)] = df[:][(df.number == key)&(df.hours==j)&(df.day==i)]
+#            if count%1000==0:
+#                print("Still working on dictionary", count)
+#            count+=1
 
-with open('dict.pkl','wb') as output:
-    pickle.dump(DataFrameDictHourDayStation, output, pickle.HIGHEST_PROTOCOL)
+#with open('dict.pkl','wb') as output:
+#    pickle.dump(DataFrameDictHourDayStation, output, pickle.HIGHEST_PROTOCOL)
+
+with open('dict.pkl','rb') as input:
+	DataFrameDictHourDayStation=pickle.load(input)
 
 def mkdir(path):
     try:
@@ -63,7 +70,7 @@ for key in DataFrameDictHourDayStation.keys():
             model = None
             pickle.dump(model, output, pickle.HIGHEST_PROTOCOL)
             continue
-    linear = LinearRegression()
+    linear = RandomForestClassifier()
     model=linear.fit(DataFrameDictHourDayStation[key][['wind','temperature','rain_True','rain_False']],DataFrameDictHourDayStation[key]['available_bikes'])
     mkdir(key)
     with open("./"+str(key)+"/model.pkl",'wb') as output:
