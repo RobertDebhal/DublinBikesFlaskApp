@@ -4,9 +4,10 @@ import sqlalchemy
 import sqlite3
 import pickle
 import requests
+import json
 import pandas as pd
+import math
 import datetime
-
 #app.config.from_object('config')
 
 #from lecture notes
@@ -17,6 +18,48 @@ def connect_to_database():
 def connect_to_local_db():
     engine = sqlite3.connect('most_recent_station_data.db')
     return engine
+
+def get_future_weather_info():
+    """
+    Function to retrieve prediction data 
+    for Dublin Weather in JSON format.
+    """
+    response = requests.get('http://api.openweathermap.org/data/2.5/forecast?q=Dublin,ie&APPID=70ef396e3ce3949e0934b4428e41f453')
+    if response.status_code == 200:
+        return json.loads(response.content.decode('utf-8'))
+    else:
+        return None
+
+def num_map(num):
+    if num%3==0:
+        return num
+    nums = [[0,3],[3,6],[6,9],[9,12],[12,15],[15,18],[18,21]]
+    found=False
+
+    for elem in nums:
+        if num > elem[0]and num<elem[1]:
+            if (num - elem[0])<=1.5:
+                num=elem[0]
+            else:
+                num=elem[1]
+            found=True
+    if found:
+        return num
+    else:
+        num=21
+        return num
+def to_datetime(date_time_string):
+    date_time_list=date_time_string.split(' ')
+    date=date_time_list[0].split()
+    date_seperated = date[0].split('-')
+    year = date_seperated[0]
+    month = date_seperated[1]
+    day = date_seperated[2]
+    hour_list= date_time_list[1].split(':')
+    hour_of_day= hour_list[0]
+    date_list=date[0].split('-')
+    dtObj = datetime.datetime(int(year),int(month),int(day),int(hour_of_day))
+    return dtObj
 
 #@app.before_request
 #def before_request():
@@ -90,16 +133,37 @@ def get_rain(station_id):
 
 @app.route("/<int:station_id>/<int:day>/<int:hour>")
 def predict(station_id,day,hour):
-    engine = connect_to_database()
-    conn = engine.connect() 
-    rows=conn.execute('SELECT last_update, AVG(available_bikes) FROM dynamic WHERE number ={};'.format(station_id))
-    data = []
-    for row in rows:
-        #dt = datetime.datetime(last_update)
-        data.append(dict(row))
-        #data.append(dt)
-    return jsonify(data)
-  
+    hour = num_map(hour)
+    response = get_future_weather_info()
+    index_to_use=-1
+    for i in range(len(response['list'])):
+        dt = to_datetime(response['list'][i]['dt_txt'])
+        if dt.weekday()==day and dt.hour==hour:
+            index_to_use=i
+            i+=1
+    if index_to_use >= 0:
+        wind = response['list'][index_to_use]['wind']['speed']
+        desc = response['list'][index_to_use]['weather'][0]['description']
+        temp = response['list'][index_to_use]['main']['temp']-273.15
+        with open("./analytics/"+str(station_id)+"/"+str(day)+"/"+str(hour)+"/model.pkl","rb") as input:
+            model = pickle.load(input)
+        df = pd.DataFrame([[wind,temp,1,0]],columns=['wind','temperature','rain_True','rain_False'])
+        prediction = model.predict(df)
+        if prediction[0]<0:
+            prediction[0]=0
+        return "Prediction is: " + str(math.ceil(prediction[0])) + " available bikes"
+    else:
+        return "Sorry, no data for that time"
+
+
+
+
+
+
+
+
+
+
 
 
 

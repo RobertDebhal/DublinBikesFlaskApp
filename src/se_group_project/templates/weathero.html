@@ -95,20 +95,21 @@ ul.dropdown2 ul li a:hover			{ display: block; background: #ddd !important; }
 		  
 	<!-- ------------------------ Day dropdown------------------> 	
 	<div id = "station"></div>
-	
+		  
 	<div style='display:none;"' id ='display_dropdowns'>
-	<div style="margin-left:11%">Predict Bike Availabilty!</div>
+		<div style="margin-left:8.5%"><button onClick="predict()">Click to predict Bike Availabilty!</button></div>
+		<div id="predict" style="margin-left:9.5%;text-align:centre;padding-top:10px;"></div>
 	<div id="myDropdown" >
 		<ul class="dropdown2">	
-        	<li><a id='writing_for_dropdown_day'>Select a Day</a>
-        		<ul class="sub_menu"  style=" list-style-type: none;">
-        			<li><a onclick="dayFunc('Monday')">Monday</a></li>
-					<li><a onclick="dayFunc('Tuesday')">Tuesday</a></li>
-					<li><a onclick="dayFunc('Wednesday')">Wednesday</a></li>
-					<li><a onclick="dayFunc('Thursday')">Thursday</a></li>
-					<li><a onclick="dayFunc('Friday')">Friday</a></li>
-					<li><a onclick="dayFunc('Saturday')">Saturday</a></li>
-					<li><a onclick="dayFunc('Sunday')">Sunday</a></li>    
+        	<li><a id='writing_for_dropdown_day' style="text-align:center;">Select a Day</a>
+        		<ul class="sub_menu"  style="list-style-type: none;">
+        			<li><a onclick="dayFunc('Monday',0)">Monday</a></li>
+					<li><a onclick="dayFunc('Tuesday',1)">Tuesday</a></li>
+					<li><a onclick="dayFunc('Wednesday',2)">Wednesday</a></li>
+					<li><a onclick="dayFunc('Thursday',3)">Thursday</a></li>
+					<li><a onclick="dayFunc('Friday',4)">Friday</a></li>
+					<li><a onclick="dayFunc('Saturday',5)">Saturday</a></li>
+					<li><a onclick="dayFunc('Sunday',6)">Sunday</a></li>    
         		</ul>
         	</li>
         </ul>
@@ -116,7 +117,7 @@ ul.dropdown2 ul li a:hover			{ display: block; background: #ddd !important; }
 	<!-- --------------------Hour dropdown-----------------------> 
 	<div id="myDropdown2" >
         <ul class="dropdown2">
-        	<li><a id='writing_for_dropdown_hour'>Select a Time</a>
+        	<li><a id='writing_for_dropdown_hour' style="text-align:center;">Select a Time</a>
         		<ul class="sub_menu"  style=" list-style-type: none;">
         			 <li><a onclick="hourFunc(6)">6am</a></li>
 					<li><a onclick="hourFunc(7)">7am</a></li>
@@ -183,14 +184,27 @@ ul.dropdown2 ul li a:hover			{ display: block; background: #ddd !important; }
 	var day = "please pick a day";
 	var hour = "please pick an hour";
 	
-    function dayFunc(String){
+	function predict(){
+		
+		$.ajax({
+				url: "http://localhost:5000/" + station +"/"+ dayNumber +"/"+ hour+"",
+				success: function(data) {
+				document.getElementById("predict").innerHTML=data;		
+			}
+		});	
+	}
+    function dayFunc(String, Number){
         day = String;
+		dayNumber=Number;
 		document.getElementById("writing_for_dropdown_day").innerHTML=day;
     }
 	function hourFunc(Digit){
         hour = Digit;
-		
-		document.getElementById("writing_for_dropdown_hour").innerHTML=hour;
+		var str = hour+":00";
+		if (hour<10){
+			str = "0"+str;
+		}
+		document.getElementById("writing_for_dropdown_hour").innerHTML=str;
     } 
         
     
@@ -446,12 +460,12 @@ function myMap() {
 								hAxis: {
 									title: 'Time of Day',
 									viewWindow: {
-										min: [6, 30, 0],
-										max: [27, 30, 0]
+										min: [3, 30, 0],
+										max: [23, 30, 0]
 									}
 								},
 								vAxis: {
-									title: 'Available Bikes'
+									title: '#'
 								}
 							};
 							var chart = new google.visualization.ColumnChart(
