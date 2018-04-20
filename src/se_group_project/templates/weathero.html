@@ -387,7 +387,7 @@ function myMap() {
 								x.style.display = "block";
 						
 					$.ajax({
-						url: "http://localhost:5000/available/" + cityCircle.number,
+						url: "http://ec2-35-162-44-199.us-west-2.compute.amazonaws.com:5000/available/" + cityCircle.number,
 						success: function(data) {
 							station=cityCircle.number;
 							infowindow.setContent('<b>Station Number: ' + data[0].number + '</b><br>' + data[0].address + '<br>Available bikes: ' + data[0].available_bikes + "<br>Available stands: " + data[0].available_bike_stands);
@@ -419,12 +419,12 @@ function myMap() {
 
 					function drawInfoWindowChart(cityCircle) {
 
-						var jqxhr = $.getJSON("http://localhost:5000/rain/" + cityCircle.number, function(data) {
+						var jqxhr = $.getJSON("http://ec2-35-162-44-199.us-west-2.compute.amazonaws.com:5000/rain/" + cityCircle.number, function(data) {
 
 							var chart_data = new google.visualization.DataTable();
 							chart_data.addColumn('timeofday', 'Time of Day');
-							chart_data.addColumn('number', 'available_bikes')
-							chart_data.addColumn('number', 'available_bike_stands');
+							chart_data.addColumn('number', 'rain')
+							chart_data.addColumn('number', 'no rain');
 							var i;
 							var listRaining = [];
 							var listNotRaining = [];
@@ -444,10 +444,14 @@ function myMap() {
 
 							var k;
 							for (k = 0; k < 24; k++) {
+								var stringRep = k+":00"
+								if (k<10) {
+									stringRep = "0"+stringRep;
+								}
 								chart_data.addRows([
 									[{
 										v: [k, 0, 0],
-										f: 'k am'
+										f: stringRep
 									}, listRaining[k], listNotRaining[k]]
 								]);
 							}
@@ -465,7 +469,7 @@ function myMap() {
 									}
 								},
 								vAxis: {
-									title: '#'
+									title: '# of available bikes'
 								}
 							};
 							var chart = new google.visualization.ColumnChart(
@@ -477,7 +481,7 @@ function myMap() {
 					}
 
 					function drawPieChart(cityCircle) {
-						var jqxhr = $.getJSON("http://localhost:5000/available/" + cityCircle.number, function(data) {
+						var jqxhr = $.getJSON("http://ec2-35-162-44-199.us-west-2.compute.amazonaws.com:5000/available/" + cityCircle.number, function(data) {
 
 
 							var chart_data = google.visualization.arrayToDataTable([
@@ -505,7 +509,7 @@ function myMap() {
 			}
 		}
 	}
-	checkNumbers("http://localhost:5000/orlaJSON");
+	checkNumbers("http://ec2-35-162-44-199.us-west-2.compute.amazonaws.com:5000/orlaJSON");
 
 }
 	</script>
