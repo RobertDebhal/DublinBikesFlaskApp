@@ -187,7 +187,7 @@ ul.dropdown2 ul li a:hover			{ display: block; background: #ddd !important; }
 	function predict(){
 		
 		$.ajax({
-				url: "http://localhost:5000/" + station +"/"+ dayNumber +"/"+ hour+"",
+				url: "http://ec2-35-162-44-199.us-west-2.compute.amazonaws.com:5000/" + station +"/"+ dayNumber +"/"+ hour+"",
 				success: function(data) {
 				document.getElementById("predict").innerHTML=data;		
 			}
@@ -440,7 +440,6 @@ function myMap() {
 									listNotRaining[data[i].hours] = data[i].average_available_no_rain;
 								}
 							}
-							console.log(listRaining);
 
 							var k;
 							for (k = 0; k < 24; k++) {
@@ -457,6 +456,7 @@ function myMap() {
 							}
 
 							var options = {
+								legend:{ position: 'left'},
 								title: 'Availability',
 								colors: ['#9575cd',
 									'#33ac71'
@@ -464,7 +464,7 @@ function myMap() {
 								hAxis: {
 									title: 'Time of Day',
 									viewWindow: {
-										min: [3, 30, 0],
+										min: [5, 30, 0],
 										max: [23, 30, 0]
 									}
 								},
