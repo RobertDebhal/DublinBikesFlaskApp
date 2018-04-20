@@ -38,8 +38,19 @@ ul.dropdown2 li a.hover              { background: #737373; position: relative; 
 ul.dropdown2 ul 					{ display: none; position: absolute; top: 0; left: 0; width: 180px; z-index: 1000; }
 ul.dropdown2 ul li 					{ font-weight: normal; background: #f6f6f6; color: #000; border-bottom: 1px solid #ccc; }
 ul.dropdown2 ul li a				{ display: block; background: #eee !important; } 
-ul.dropdown2 ul li a:hover			{ display: block; background: #ddd !important; } 
-	
+ul.dropdown2 ul li a:hover			{ display: block; background: #ddd !important; }
+
+/*https://developers.google.com/maps/documentation/javascript/adding-a-legend*/
+
+#legend {
+    font-family: Arial, sans-serif;
+    background: #fff;
+    padding: 10px;
+    margin: 10px;
+    border: 3px solid #000;
+    width:225px;
+  }
+
 	</style>
 </head>
 <body id="body" onload="startTime()">
@@ -80,7 +91,8 @@ ul.dropdown2 ul li a:hover			{ display: block; background: #ddd !important; }
     </div>
     </div>
 	<!-------------------------------------------Map ------------------------------------->
-	<div id="map" style="width:100%;height:400px"></div>
+	<div id="map" style="width:100%;height:400px;"></div>
+        <div id="legend"><p>Red circles: no available bikes</p><p>Blue circles: bikes available</p><p>Circles size: varies with # available bikes</p></div>
 	<!-------------------------------------------Charts------------------------------------->
 	  <div class="wrapper" style="width:95%">
 		  
@@ -342,7 +354,8 @@ function myMap() {
 			mapTypeId: google.maps.MapTypeId.ROADMAP
 		}
 		var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-		var i;
+		map.controls[google.maps.ControlPosition.LEFT_TOP].push(document.getElementById("legend"));
+                var i;
 		for (i = 0; i < arr.length; i++) {
 			var radiusOut;
 			var colorOut;
@@ -456,7 +469,7 @@ function myMap() {
 							}
 
 							var options = {
-								legend:{ position: 'left'},
+								legend:{ position: 'top'},
 								title: 'Availability',
 								colors: ['#9575cd',
 									'#33ac71'
@@ -469,7 +482,7 @@ function myMap() {
 									}
 								},
 								vAxis: {
-									title: '# of available bikes'
+									title: 'avg # of available bikes'
 								}
 							};
 							var chart = new google.visualization.ColumnChart(
@@ -482,7 +495,6 @@ function myMap() {
 
 					function drawPieChart(cityCircle) {
 						var jqxhr = $.getJSON("http://ec2-35-162-44-199.us-west-2.compute.amazonaws.com:5000/available/" + cityCircle.number, function(data) {
-
 
 							var chart_data = google.visualization.arrayToDataTable([
 								['Status', 'Number of bikes'],
@@ -510,7 +522,6 @@ function myMap() {
 		}
 	}
 	checkNumbers("http://ec2-35-162-44-199.us-west-2.compute.amazonaws.com:5000/orlaJSON");
-
 }
 	</script>
 	<script src="https://maps.googleapis.com/maps/api/js?callback=myMap&key=AIzaSyDnhjzNlsrZqK3A_HtAfH0ya2hmN0qQAzs" async defer ></script>
